@@ -7,13 +7,13 @@ interface CustomInputProps{
 StartIcon?: LucideIcon | React.ComponentType<{ className?: string }>;
 
 }
-export default function CustomInput({StartIcon,className,type,...props}:CustomInputProps) {
+export default function CustomInput({StartIcon,className,type}:CustomInputProps) {
   return (
     <div className='relative flex items-center w-full'>
         {StartIcon && (
           <StartIcon className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
         )}
-        <Input className = {`${className}${StartIcon&&'pl-10'}`} type={type} {...props} />
+        <Input className = {`${className}${StartIcon?'pl-10':""}`} type={type} />
     </div>
   )
 }
