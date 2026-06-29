@@ -1,0 +1,1 @@
+export const validations ={email:{required:'email is requiured'}} 
