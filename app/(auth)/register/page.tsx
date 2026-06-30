@@ -6,7 +6,7 @@ export default function Register() {
     <>
       <h1>Register </h1>
       {/* <Input type="email" /> */}
-      <CustomInput type="email" StartIcon={Mail}/>
+      <CustomInput placeHolder='Type your email' type="email" StartIcon={Mail} labelText={'Registered email address'} />
     </>
   );
 }

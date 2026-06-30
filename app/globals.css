@@ -135,3 +135,12 @@
     @apply font-sans;
   }
 }
+.text-Header{
+font-weight: 700;
+font-style: Bold;
+font-size: 22px;
+line-height: 100%;
+letter-spacing: 0%;
+color: rgba(197, 216, 109, 1) ;
+
+}
