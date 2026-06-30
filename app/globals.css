@@ -30,7 +30,7 @@
   --color-border: var(--border);
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
+  /* --color-accent: var(--accent); */
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -142,6 +142,20 @@ font-size: 22px;
 line-height: 100%;
 letter-spacing: 0%;
 color: rgba(197, 216, 109, 1) ;
+
+}
+span[data-slot="select-value"]{
+  color: white !important;
+}
+input{caret-color: var(--color-accent);caret-shape: block; caret-animation: auto;}
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px var(--color-dark) inset !important; 
+    -webkit-text-fill-color: var(--color-accent) !important; 
+        -webkit-background-clip: text;
+        transition: background-color 5000s ease-in-out 0s;
 
 }
 @layer base {

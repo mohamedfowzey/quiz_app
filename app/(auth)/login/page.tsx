@@ -19,6 +19,8 @@ export default function Login() {
     try {
       setLoading(true)
       let response = await apiLogin(data);
+      console.log(response);
+      
       toast.success(response?.data?.message, { position: "top-center" })
 
     } catch (error: unknown) {
