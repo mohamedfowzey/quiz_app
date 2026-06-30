@@ -6,7 +6,7 @@ export default function Auth({ children }: { children: ReactNode }) {
     return (
         <div className="h-screen w-full bg-slate-950 p-10 grid grid-cols-1 md:grid-cols-2 gap-8">
 
-            <div className="flex relative h-full  flex-col items-center justify-center px-10">
+            <div className="flex relative h-full  flex-col items-center justify-center  md:px-10">
                 <img
                     src={logo.src}
                     alt="Learning journey"
