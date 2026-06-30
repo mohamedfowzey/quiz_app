@@ -10,7 +10,7 @@ export default function ChangePassword() {
 
       <form action={changePasswordAction}>
         <CustomInput
-          className="my-2"
+          
           placeHolder={"Type your old password"}
           name="oldPassword"
           type="password"
@@ -19,7 +19,7 @@ export default function ChangePassword() {
         />
 
         <CustomInput
-          className="my-2"
+          
           placeHolder={"Type your new password"}
           name="newPassword"
           type="password"

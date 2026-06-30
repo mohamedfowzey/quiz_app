@@ -3,6 +3,8 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import Auth from "./(auth)/layout";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner"
+
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -40,6 +42,17 @@ export default function RootLayout({
     >
       <body suppressHydrationWarning className="min-h-full flex flex-col">
         {children}
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            unstyled: true,
+            classNames: {
+              toast: 'flex items-center gap-4 p-4 rounded-lg border min-w-[300px]',
+              success: 'bg-green-600 text-white border-green-700',
+              error: 'bg-red-600 text-white border-red-700',
+            },
+          }}
+        />
       </body>
     </html>
   );

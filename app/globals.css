@@ -144,3 +144,9 @@ letter-spacing: 0%;
 color: rgba(197, 216, 109, 1) ;
 
 }
+@layer base {
+  :root {
+    --success: 142.1 76.2% 36.3%; 
+    --destructive: 0 84.2% 60.2%; 
+  }
+}

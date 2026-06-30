@@ -13,7 +13,7 @@ export default function AuthTabs() {
 
   return (
     <div className="flex flex-col  gap-6 p-6 rounded-lg text-white select-none">
-      <h2 className="text-[#C5E1A5] text-xl font-semibold ">
+      <h2 className="text-Header text-xl font-semibold ">
         Continue your learning journey with QuizWiz!
       </h2>
 
