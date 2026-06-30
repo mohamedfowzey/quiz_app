@@ -4,13 +4,13 @@ import logo from "@/public/images/logo.png"
 
 export default function Auth({ children }: { children: ReactNode }) {
     return (
-        <div className="h-screen w-full bg-slate-950 p-10 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="h-screen w-full bg-dark p-10 grid grid-cols-1 md:grid-cols-2 gap-8">
 
-            <div className="flex relative h-full  flex-col items-center justify-center  md:px-10">
+            <div className="flex relative h-full overflow-auto scrollbar-none flex-col items-center justify-center  md:px-10">
                 <img
                     src={logo.src}
                     alt="Learning journey"
-                    className=" w-44 rounded-lg absolute top-5 left-10"
+                    className=" w-44 rounded-lg absolute top-3 left-10"
                 />
                 <div className="w-full  mt-20 ">
                     {children}
