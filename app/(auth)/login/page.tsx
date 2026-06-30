@@ -9,7 +9,7 @@ export default function Login() {
       <AuthTabs />
       <form action="">
         <CustomInput
-          className="my-2"
+          // className="my-2 "
           placeHolder={"Type your email"}
           type="email"
           StartIcon={Mail}
@@ -17,7 +17,7 @@ export default function Login() {
         />
 
         <CustomInput
-          className="my-2"
+          // className="my-2"
           placeHolder={"Type your password"}
           type="password"
           StartIcon={Mail}
