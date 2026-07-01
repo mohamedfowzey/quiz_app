@@ -1,7 +1,8 @@
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { LucideIcon } from "lucide-react";
-import React, { forwardRef, InputHTMLAttributes } from "react"; 
+import { EyeOff, LucideIcon } from "lucide-react";
+import { Eye } from "lucide-react";
+import React, { forwardRef, InputHTMLAttributes, useState } from "react"; 
 import { Control, Controller, FieldValues, Path } from "react-hook-form"; // 1. Import Controller and Control
 
 interface CustomInputProps<T extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
@@ -28,7 +29,7 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputProps<FieldValues>>(
   onBlur,
   ...props 
 }, ref) => {
-  
+  const [showPassword, setShowPassword] = useState(false);
   const { dir, ...selectProps } = props;
   const selectDir = dir === "ltr" || dir === "rtl" ? dir : undefined;
 
@@ -39,6 +40,15 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputProps<FieldValues>>(
         {StartIcon && (
           <StartIcon className="absolute left-3 h-4 w-4 text-white pointer-events-none" />
         )}
+      {type === 'password' ?(
+        showPassword?
+        (<EyeOff onClick={()=>setShowPassword(false)} className="absolute z-10 right-3 h-4 w-4 text-white cursor-pointer" />)
+        : 
+        (<Eye onClick={()=>setShowPassword(true)} className="absolute right-3 h-4 w-4 text-white z-10 cursor-pointer" />)
+        )
+        : 
+        <></>
+        }
         
         {type === 'select' && control ? (
           // 3. Wrap Select with Controller to bridge the value state
@@ -76,7 +86,7 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputProps<FieldValues>>(
             onBlur={onBlur}
             placeholder={placeHolder}
             className={`placeholder:text-white py-5 border-2 my-1 ${className} ${StartIcon && "pl-10"}`}
-            type={type}
+            type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
             {...props} 
           />
         )}
