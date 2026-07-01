@@ -1,45 +1,60 @@
-'use client'
+"use client";
 import AuthTabs from "@/app/(components)/auth_components/AuthTabs/AuthTabs";
 import CustomButton from "@/app/(components)/auth_components/custom_button_auth/CustomButton";
 import CustomInput from "@/app/(components)/auth_components/custom_input/CustomInput";
 import { apiLogin, LoginData } from "@/app/api/authApi/Auth";
 import axios from "axios";
 import { Mail } from "lucide-react";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-
+import Link from "next/link";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 export default function Login() {
-
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginData>();
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginData>();
 
   const postLogin = async (data: LoginData) => {
-
     try {
-      setLoading(true)
-      let response = await apiLogin(data);
-      console.log(response);
-      
-      toast.success(response?.data?.message, { position: "top-center" })
+      const response = await apiLogin(data);
 
+      Cookies.set("auth_token", response.data.data.accessToken, {
+        expires: 7,
+        sameSite: "strict",
+      });
+
+      Cookies.set("role", response.data.data.profile.role, {
+        expires: 7,
+        sameSite: "strict",
+      });
+
+      router.push(
+        response.data.data.profile.role === "Instructor"
+          ? "/instructor/dashboard"
+          : "/learner/dashboard",
+      );
+      toast.success(response.data.message, {
+        position: "top-center",
+      });
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        // هنا TypeScript عارف إن error هو AxiosError
-        const message = error.response?.data?.message ;
-        toast.error(message, { position: "top-center" });
+        toast.error(error.response?.data?.message, {
+          position: "top-center",
+        });
       } else {
-        // لو الايرور مش من Axios (مثلاً مشكلة في الكود نفسه)
-        toast.error("Network error. Please check your connection");
+        toast.error("Network error");
       }
     }
-
   };
 
   return (
     <>
       <AuthTabs />
-      <form onSubmit={handleSubmit(postLogin)}>
+      <form onSubmit={handleSubmit(postLogin)} className="w-full">
         <CustomInput
           placeHolder={"Type your email"}
           type="email"
@@ -47,7 +62,11 @@ export default function Login() {
           {...register("email", { required: true })}
           labelText={"Registered email address"}
         />
-        {errors.email && <p className="text-rose-800  mb-2 text-sm ">Registered email address Required</p>}
+        {errors.email && (
+          <p className="text-rose-800 mb-2 text-sm ">
+            Registered email address Required
+          </p>
+        )}
 
         <CustomInput
           placeHolder={"Type your password"}
@@ -56,8 +75,21 @@ export default function Login() {
           {...register("password", { required: true })}
           labelText={"Password"}
         />
-        {errors.password && <p className="text-rose-800  text-sm ">Password Required</p>}
+        {errors.password && (
+          <p className="text-rose-800 text-sm mb-4">Password Required</p>
+        )}
 
+        <div className="flex items-center  justify-end">
+          <p className="text-gray-300 text-sm font-light">
+            Forgot password?{" "}
+            <Link
+              href="/forget_password"
+              className="text-[#C5FF41] hover:underline font-normal transition-all"
+            >
+              click here
+            </Link>
+          </p>
+        </div>
         <CustomButton type="submit" headerText={" Sign In "} />
       </form>
     </>
