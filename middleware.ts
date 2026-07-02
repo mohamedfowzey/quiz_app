@@ -19,10 +19,20 @@ export function middleware(request: NextRequest) {
       new URL("/instructor/dashboard", request.url)
     );
   }
+  if ((pathname === "/" || pathname === '/login' || pathname === '/reset_password' || pathname === '/forget_password' || pathname === '/register') && role === "Student") {
+    return NextResponse.redirect(
+      new URL("/learner/dashboard", request.url)
+    );
+  }
+  if ((pathname === "/" || pathname === '/login' || pathname === '/reset_password' || pathname === '/forget_password' || pathname === '/register') && role === "Instructor") {
+    return NextResponse.redirect(
+      new URL("/instructor/dashboard", request.url)
+    );
+  }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/instructor/:path*", "/learner/:path*",'/change_password'],
+  matcher: ["/instructor/:path*", "/learner/:path*",'/change_password','/reset_password','/forget_password','/login','/register','/'],
 };

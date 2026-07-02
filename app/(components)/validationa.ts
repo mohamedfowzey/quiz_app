@@ -8,6 +8,8 @@ export const validations ={
         pattern:{value:/^[A-Za-z]{1,}$/,message:'name must be a one-word valid person name'}
     },
     role:{required:'role must be one of instructor, learner'},
-    password:{required:'password is required'}
+    password:{required:'password is required'},
+    otp:{required:'otp is required', pattern:{value:/^\d{4}$/,message:'invalid otp'}},
+    confirmPassword:{required:'confirm password is required'}
 
 } 
