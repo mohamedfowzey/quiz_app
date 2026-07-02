@@ -10,7 +10,9 @@ import { toast } from "sonner";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 export default function Login() {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const {
     register,
@@ -20,6 +22,7 @@ export default function Login() {
 
   const postLogin = async (data: LoginData) => {
     try {
+      setLoading(true);
       const response = await apiLogin(data);
 
       Cookies.set("auth_token", response.data.data.accessToken, {
@@ -40,6 +43,7 @@ export default function Login() {
       toast.success(response.data.message, {
         position: "top-center",
       });
+      setLoading(false);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.message, {
@@ -49,6 +53,7 @@ export default function Login() {
         toast.error("Network error");
       }
     }
+    setLoading(false);
   };
 
   return (
@@ -90,7 +95,7 @@ export default function Login() {
             </Link>
           </p>
         </div>
-        <CustomButton type="submit" headerText={" Sign In "} />
+        <CustomButton  type="submit" headerText={" Sign In "} loading={loading}   />
       </form>
     </>
   );

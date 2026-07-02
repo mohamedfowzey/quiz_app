@@ -42,7 +42,7 @@ export default function RootLayout({
       <body suppressHydrationWarning className="min-h-full flex flex-col">
         {children}
         <Toaster
-          position="top-right"
+          position="top-center"
           toastOptions={{
             unstyled: true,
             classNames: {

@@ -14,7 +14,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/learner/dashboard", request.url));
   }
 
-  if (pathname.startsWith("/learner") && role !== "Learner") {
+  if (pathname.startsWith("/learner") && role !== "Student") {
     return NextResponse.redirect(
       new URL("/instructor/dashboard", request.url)
     );
@@ -24,5 +24,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/instructor/:path*", "/learner/:path*"],
+  matcher: ["/instructor/:path*", "/learner/:path*",'/change_password'],
 };
