@@ -7,6 +7,7 @@ import { apiRegister } from "@/app/api/authApi/Auth";
 import axios from "axios";
 import { Mail, User } from "lucide-react";
 import { redirect } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 interface RegisterData{
@@ -18,12 +19,12 @@ interface RegisterData{
 }
 export default function Register() {
 
-
+  const [loading, setLoading] = useState(false);
   const {register,handleSubmit,formState:errors,control} = useForm<RegisterData>({mode:'onChange',defaultValues:{role:'',first_name:'',last_name:'',email:'',password:''}});
   
   const onSubmit = async(data:RegisterData)=>{
     try{
-
+      setLoading(true);
       const res = await apiRegister(data);
       toast.success(res.data?.message)
       redirect('/login')
@@ -31,8 +32,8 @@ export default function Register() {
     catch(error:unknown){
       if(axios.isAxiosError(error)){
         toast.error(error.response?.data?.message);
-        
       }
+      setLoading(false);
     }
   }
 
@@ -92,7 +93,7 @@ export default function Register() {
         {...register('password',validations.password)} 
         />
         <p className="text-sm text-red-600">{errors.errors.password?.message}</p>
-        <CustomButton type="submit" headerText="register"/>
+        <CustomButton type="submit" headerText="register" loading={loading}/>
       </form>
     </>
   );

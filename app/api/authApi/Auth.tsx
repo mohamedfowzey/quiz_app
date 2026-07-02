@@ -11,6 +11,7 @@ export interface ForgetPasswordData {
 export interface ResetPasswordData {
   email: string;
   password: string;
+  confirmPassword: string;
   otp: string;
 };
 
@@ -40,8 +41,10 @@ export const apiForgetPassword = (data: ForgetPasswordData) => {
 };
 
 export const apiReset = (data: ResetPasswordData) => {
-  return axiosClient.post("/api/auth/reset-password", data);
-};
+  const {confirmPassword:_, ...rest} = data; // Exclude confirmPassword from the request body
+  return axiosClient.post("/api/auth/reset-password", rest);
+}
+  
 
 export const apichangePassword = (data: ChangePasswordData) => {
   return axiosClient.post("/api/auth/change-password", data);
