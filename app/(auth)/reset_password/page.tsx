@@ -5,12 +5,15 @@ import { validations } from "@/app/(components)/validationa";
 import { apiReset, ResetPasswordData } from "@/app/api/authApi/Auth";
 import axios from "axios";
 import { Mail } from "lucide-react"
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export default function ResetPassword(){
+    const [loading,setLoading] = useState(false);
     const {register, handleSubmit, formState: {errors},getValues} = useForm<ResetPasswordData>({mode:'onChange'});
     const submit = async (data:ResetPasswordData)=>{
+        setLoading(true);
         try {
             const res = await apiReset(data);
             toast.success(res.data?.message);
@@ -22,7 +25,11 @@ export default function ResetPassword(){
         else{
             toast.error('Something went wrong');
         }
-    }}
+    }
+    finally {
+        setLoading(false);
+    }
+}
 
     return(
         <>
@@ -37,7 +44,7 @@ export default function ResetPassword(){
             <p className="text-red-500">{errors.password?.message}</p>
             <CustomInput aria-invalid = {!!errors.confirmPassword} placeHolder={'Type your confirm password'} type="password" StartIcon={Mail} labelText={'Confirm Password'} {...register("confirmPassword", {...validations.confirmPassword,validate: value => value === getValues('password') || 'Passwords do not match'})} />
             <p className="text-red-500">{errors.confirmPassword?.message}</p>
-            <CustomButton headerText={" Reset "} loading={false}/>
+            <CustomButton headerText={" Reset "} loading={loading} type='submit'/>
             </form>
         </>
     )
