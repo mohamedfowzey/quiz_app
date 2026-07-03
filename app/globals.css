@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is(.dark or .dark *));
 @theme {
   --color-light: rgba(255, 237, 223, 1);
   --color-dark:rgba(13, 19, 33, 1);
