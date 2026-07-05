@@ -2,10 +2,13 @@
 
 import * as React from "react";
 
-import { NavUser } from "@/components/nav-user";
 import Image from "next/image";
 import logo from "@/public/images/Logo icon.png";
 import homeIcon from "@/public/images/Dashboard icon.svg";
+import group from "@/public/images/Students icon.png";
+import help from "@/public/images/help icon.png";
+import quiz from "@/public/images/Quiz icon.svg";
+import result from "@/public/images/result.png";
 import {
   Sidebar,
   SidebarContent,
@@ -17,120 +20,14 @@ import {
   
   SidebarRail,
 } from "@/components/ui/sidebar";
-import {
-  TerminalSquareIcon,
-  BotIcon,
-  BookOpenIcon,
-  Settings2Icon,
-  FrameIcon,
-  PieChartIcon,
-  MapIcon,
-  FilePieChartIcon,
-  
-} from "lucide-react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 // This is sample data.
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
+
   
-  navMain: [
-    {
-      title: "Playground",
-      url: "/quizes",
-      icon: <TerminalSquareIcon />,
-      isActive: true,
-      
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: <BotIcon />,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: <BookOpenIcon />,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: <Settings2Icon />,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: <FrameIcon />,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: <PieChartIcon />,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: <MapIcon />,
-    },
-  ],
-};
+  
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
@@ -146,7 +43,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu >
-          <SidebarMenuItem>
+          <SidebarMenuItem className = 'mb-8 flex items-center justify-center'>
             <SidebarMenuButton size={'lg'} asChild className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === 'dashboard' && 'border-r-8 border-dark'}`}>
               <Link href={`/${role}/dashboard`} className="flex items-center gap-3 border-r-0">
               <Image src={homeIcon.src} alt="Logo" width={40} height={40} className="bg-light p-0.5"/>
@@ -154,26 +51,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          <SidebarMenuItem>
+          <SidebarMenuItem className = 'mb-8 flex items-center justify-center'>
             <SidebarMenuButton size={'lg'} asChild className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === 'quizes' && 'border-r-8 border-dark'}`}>
-              <Link href={`/${role}/quizes`} className="flex items-center gap-3 border-r-0">
-              <Image src={homeIcon.src} alt="Logo" width={40} height={40} className="bg-light p-0.5"/>
+              <Link href={`/${role}/quizzes`} className="flex items-center gap-3 border-r-0">
+              <Image src={  quiz.src} alt="Logo" width={40} height={40} className="bg-light p-0.5"/>
                 <span>quizes</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          <SidebarMenuItem>
+          <SidebarMenuItem className = 'mb-8 flex items-center justify-center'>
             <SidebarMenuButton size={'lg'} asChild className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === 'groups' && 'border-r-8 border-dark'}`}>
               <Link href={`/${role}/groups`} className="flex items-center gap-3 border-r-0">
-              <Image src={homeIcon.src} alt="Logo" width={40} height={40} className="bg-light p-0.5"/>
+              <Image src={  group.src} alt="Logo" width={40} height={40} className="bg-light p-0.5"/>
                 <span>groups</span>
               </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
+            </SidebarMenuButton>                    </SidebarMenuItem>
+          <SidebarMenuItem className = 'mb-8 flex items-center justify-center'>
             <SidebarMenuButton size={'lg'} asChild className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === 'results' && 'border-r-8 border-dark'}`}>
               <Link href={`/${role}/results`} className="flex items-center gap-3 border-r-0">
-              <Image src={homeIcon.src} alt="Logo" width={40} height={40} className="bg-light p-0.5"/>
+              <Image src={  result.src} alt="Logo" width={40} height={40} className="bg-light p-0.5"/>
                 <span>results</span>
               </Link>
             </SidebarMenuButton>
@@ -184,8 +80,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
             <SidebarMenuButton size={'lg'} asChild className=" text-lg border-gray-400 ">
               <Link href={`/${role}/results`} className="flex items-center gap-3 ">
-              <Image src={homeIcon.src} alt="Logo" width={40} height={40} className="bg-light p-0.5"/>
-                <span>results</span>
+              <Image src={ help.src} alt="Logo" width={40} height={40} className="bg-light p-0.5"/>
+                <span>Help</span>
               </Link>
             </SidebarMenuButton>
       </SidebarFooter>
