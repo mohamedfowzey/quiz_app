@@ -7,13 +7,11 @@ export default function Main({ children }: { children: ReactNode }) {
   return (
     <>
       <SidebarProvider>
-        <div className="flex ">
+        <div className="flex w-full">
           <AppSidebar />
 
-          <div className="flex-1 min-w-0 ">
-            <div className = 'flex'>
+          <div className="grow  ">
               <Navbar />
-            </div>
             {children}
           </div>
         </div>
