@@ -4,6 +4,7 @@ import alarm from "@/public/images/Quizzes/Linker.jpeg";
 import question from "@/public/images/Quizzes/Linker2.jpeg";
 import FileSpreadsheet from "@/public/images/Quizzes/Quiz img.png";
 import Image from "next/image";
+import { CustomTable } from "@/app/(components)/dashboardShard/customTable/customTable";
 interface UpcomingQuiz {
   id: string;
   title: string;
@@ -64,6 +65,8 @@ export default function QuizzPage() {
   ];
 
   return (
+    <>
+
     <div className="p-6  mx-auto  min-h-screen text-gray-900">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
         <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-row gap-7">
@@ -199,5 +202,8 @@ export default function QuizzPage() {
         </div>
       </div>
     </div>
+
+    
+    </>
   );
 }
