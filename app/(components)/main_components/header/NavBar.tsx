@@ -28,7 +28,7 @@ export default function Navbar() {
         <div className="h-8 w-px bg-gray-200" />
 
         {/* User Info / Profile Dropdown Trigger */}
-        <div className="hidden items-center gap-4 cursor-pointer group select-none md:flex">
+        <div className="hidden sticky top-0 items-center gap-4 cursor-pointer group select-none md:flex">
           <div className="flex flex-col text-left">
             <span className="text-xs font-bold text-gray-800 leading-tight">
               Pacific Bell Telephone

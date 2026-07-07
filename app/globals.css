@@ -164,3 +164,7 @@ input:-webkit-autofill:active {
     --destructive: 0 84.2% 60.2%; 
   }
 }
+.group-data-[state=collapsed]:peer\/menu-button.group\/menu-button{
+  display: block !important;
+  width: 100% !important;
+}
