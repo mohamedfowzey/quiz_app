@@ -1,4 +1,10 @@
-import React from 'react';
+import { API_BASE_URL } from '@/app/api/AxiosClient';
+import { Student } from '@/app/types/Student';
+import {  cookies } from 'next/headers';
+import Image from 'next/image';
+import avatar from '@/public/images/avatar.avif';
+import { toast } from 'sonner';
+
 
 // Sample student data extracted from the image
 const studentsData = [
@@ -44,7 +50,18 @@ const studentsData = [
   },
 ];
 
-export default function TopStudents() {
+export default async function TopStudents() {
+  const cokies = await cookies()
+  const userToken = cokies.get('auth_token')?.value;
+  const allStudents: Student[] = await fetch(`${API_BASE_URL}/api/student`, {
+    headers: {
+      'Authorization': `Bearer ${userToken}`
+    }
+  
+  }).then(res => res.json()).catch(err => toast.error(err?.message || 'Failed to fetch students data'));
+  console.log(allStudents);
+  
+  const topStudents: Student[] = allStudents.slice(0, 5);
   return (
     <div className="w-full max-w-lg bg-white rounded-3xl p-6 shadow-sm border border-gray-100 font-sans">
       
@@ -72,17 +89,19 @@ export default function TopStudents() {
 
       {/* Students List Container */}
       <div className="flex flex-col gap-3">
-        {studentsData.map((student, index) => (
+        {topStudents.map((student, index) => (
           <div 
-            key={`${student.id}-${index}`}
+            key={`${student._id}-${index}`}
             className="flex items-center border border-gray-200 rounded-xl overflow-hidden hover:shadow-sm hover:border-gray-300 transition-all cursor-pointer group"
           >
             {/* Colored Background Avatar Container */}
-            <div className={`w-16 h-16 flex-shrink-0 ${student.avatarBg} relative overflow-hidden`}>
-              <img 
-                src={student.avatarUrl} 
-                alt={student.name} 
-                className="w-full h-full object-cover mix-blend-luminosity brightness-110 contrast-105"
+            <div className={`w-16 h-16 flex-shrink-0  relative overflow-hidden`}>
+              <Image 
+                width={100} 
+                height={100}
+                src={avatar.src} 
+                alt={student.first_name} 
+                className="w-full h-full object-cover "
               />
             </div>
 
@@ -90,12 +109,14 @@ export default function TopStudents() {
             <div className="flex-1 min-w-0 px-4 flex items-center justify-between">
               <div className="pr-2">
                 <h3 className="text-sm font-bold text-gray-800 truncate leading-snug">
-                  {student.name}
+                  {student.first_name} {student.last_name}
                 </h3>
                 <p className="text-xs font-medium text-gray-400 mt-0.5">
-                  Class rank: <span className="text-gray-600 font-semibold">{student.rank}</span>
-                  <span className="mx-1.5 text-gray-300">|</span>
-                  Average score: <span className="text-gray-600 font-semibold">{student.score}</span>
+                  Status : <span className="text-gray-600 font-semibold">{student.status}</span>
+                </p>
+                <p className="text-xs font-medium text-gray-400 mt-0.5">
+
+                  Email: <span className="text-gray-600 font-semibold">{student.email}</span>
                 </p>
               </div>
 
