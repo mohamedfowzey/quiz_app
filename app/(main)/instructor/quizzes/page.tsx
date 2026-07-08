@@ -208,5 +208,8 @@ export default function QuizzPage() {
         onSuccess={fetchQuizzes}
       />
     </div>
+
+    
+    </>
   );
 }
