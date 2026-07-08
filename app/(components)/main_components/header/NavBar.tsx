@@ -1,3 +1,7 @@
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import alarm from "@/public/images/Quizzes/Linker.jpeg";
+import Image from "next/image";
+import Link from "next/link";
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import LogoutButton from '@/components/ui/logoutBtn';
@@ -38,9 +42,8 @@ export default async function Navbar() {
   return (
     <nav className="w-full bg-white px-6 py-4 flex items-center justify-between font-sans">
       {/* Left Section: Logo */}
-                    <SidebarTrigger />
+      <SidebarTrigger />
       <div className="flex items-center pl-4 border-l border-gray-100 h-full">
-
         <span className="text-gray-800 font-bold text-lg tracking-tight select-none">
           dashboaed
         </span>
@@ -48,14 +51,14 @@ export default async function Navbar() {
 
       {/* Right Section: Button + User Info Dropdown */}
       <div className="flex items-center gap-6">
-        
         {/* Pill-shaped Action Button */}
-        <button className="flex items-center gap-2 px-4 py-1.5 border border-gray-300 rounded-full text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-          {/* Simple SVG icon placeholder representing the image_6eb5ca.png badge */}
-          <Image src = {alarm.src} alt = "add quiz" width={20} height={20} />
+        <Link
+          href="/instructor/quizzes"
+          className="flex items-center gap-2 px-4 py-1.5 border border-gray-300 rounded-full text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
+        >
+          <Image src={alarm.src} alt="add quiz" width={20} height={20} />
           <span>New quiz</span>
-        </button>
-
+        </Link>
         {/* Vertical Divider */}
         <div className="h-8 w-px bg-gray-200" />
 
@@ -69,7 +72,7 @@ export default async function Navbar() {
               {userData?.role}
             </span>
           </div>
-          
+
           {/* Dropdown Chevron Arrow */}
 
           <DropdownMenu >
@@ -101,7 +104,6 @@ export default async function Navbar() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
           </svg> */}
         </div>
-
       </div>
     </nav>
   );
