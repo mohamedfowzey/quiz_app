@@ -6,18 +6,35 @@ import question from "@/public/images/Quizzes/Linker2.jpeg";
 import FileSpreadsheet from "@/public/images/Quizzes/Quiz img.png";
 import Image from "next/image";
 import CreateQuizModal from "./CreateQuizModal";
-import { apiGetAllQuizzes, Quiz } from "@/app/api/quizApi/QuizApis";
+import QuizSuccessModal from "./QuizSuccessModal";
+import {
+  apiGetIncomingQuizzes,
+  apiGetCompletedQuizzes,
+  Quiz,
+} from "@/app/api/quizApi/QuizApis";
+import { useRouter } from "next/navigation";
 
 export default function QuizzPage() {
-  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+  const router = useRouter();
+  const [upcomingQuizzes, setUpcomingQuizzes] = useState<Quiz[]>([]);
+  const [completedQuizzes, setCompletedQuizzes] = useState<Quiz[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
+  const [createdQuizCode, setCreatedQuizCode] = useState<string>("");
 
   const fetchQuizzes = async () => {
     try {
       setLoading(true);
-      const response = await apiGetAllQuizzes();
-      setQuizzes(response.data);
+      const [incomingRes, completedRes] = await Promise.all([
+        apiGetIncomingQuizzes(),
+        apiGetCompletedQuizzes(),
+      ]);
+
+      setUpcomingQuizzes(incomingRes.data);
+      setCompletedQuizzes(completedRes.data);
+      console.log(completedRes.data);
     } catch (error) {
       console.error("Error fetching quizzes:", error);
     } finally {
@@ -29,9 +46,6 @@ export default function QuizzPage() {
     fetchQuizzes();
   }, []);
 
-  const upcomingQuizzes = quizzes.filter((q) => q.status === "open");
-  const completedQuizzes = quizzes.filter((q) => q.status === "closed");
-
   const formatDate = (isoString: string) => {
     const dateObj = new Date(isoString);
     return {
@@ -41,6 +55,12 @@ export default function QuizzPage() {
         minute: "2-digit",
       }),
     };
+  };
+
+  const handleQuizCreateSuccess = (code: string) => {
+    setCreatedQuizCode(code);
+    setIsSuccessModalOpen(true);
+    fetchQuizzes();
   };
 
   return (
@@ -59,7 +79,12 @@ export default function QuizzPage() {
             </span>
           </button>
 
-          <button className="w-full h-[150px] bg-white border border-gray-200 rounded-2xl flex flex-col items-center justify-center gap-2 hover:shadow-md transition-all cursor-pointer group text-center">
+          <button
+            onClick={() => {
+              router.push("/instructor/questions");
+            }}
+            className="w-full h-[150px] bg-white border border-gray-200 rounded-2xl flex flex-col items-center justify-center gap-2 hover:shadow-md transition-all cursor-pointer group text-center"
+          >
             <div className="group-hover:scale-105 transition-transform">
               <Image src={question} alt="question" width={60} height={60} />
             </div>
@@ -70,8 +95,9 @@ export default function QuizzPage() {
         </div>
 
         <div className="lg:col-span-8 flex flex-col gap-8">
+          {/* Upcoming Quizzes Card */}
           <div className="bg-white border border-gray-200 rounded-2xl p-6">
-            <h2 className="text-xl font-bold mb-6 text-slate-900">
+            <h2 className="text-xl font-bold mb-4 text-slate-900">
               Upcoming quizzes
             </h2>
 
@@ -84,46 +110,51 @@ export default function QuizzPage() {
                 No upcoming quizzes found.
               </div>
             ) : (
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2 max-h-[210px] overflow-y-auto pr-1 scroll-smooth [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-gray-300">
                 {upcomingQuizzes.map((quiz) => {
                   const formatted = formatDate(quiz.schadule);
                   return (
                     <div
                       key={quiz._id}
-                      className="flex flex-col md:flex-row border border-gray-100 rounded-xl overflow-hidden hover:border-gray-200 transition-colors"
+                      className="flex flex-col md:flex-row border border-gray-100 rounded-xl overflow-hidden hover:border-gray-200 transition-colors bg-white shrink-0"
                     >
-                      <div className="md:w-40 bg-orange-100/60 p-4 flex items-center justify-center min-h-[120px]">
+                      <div className="md:w-24 bg-orange-100/60 p-2 flex items-center justify-center min-h-[75px]">
                         <Image
                           src={FileSpreadsheet}
                           alt="File Spreadsheet"
-                          width={92}
-                          height={92}
+                          width={56}
+                          height={56}
                         />
                       </div>
 
-                      <div className="flex-1 p-5 flex flex-col justify-between gap-4">
+                      <div className="flex-1 p-2 flex flex-col justify-between gap-1.5">
                         <div>
-                          <h3 className="font-bold text-lg text-slate-900 mb-1">
+                          <h3 className="font-bold text-sm text-slate-900 mb-0.5 leading-tight">
                             {quiz.title}
                           </h3>
-                          <div className="flex items-center gap-2 text-sm text-gray-500">
-                            <Calendar className="w-4 h-4" />
+                          <div className="flex items-center gap-2 text-[11px] text-gray-500">
+                            <Calendar className="w-3 h-3" />
                             <span>{formatted.date}</span>
                             <span className="text-gray-300">|</span>
                             <span>{formatted.time}</span>
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-50">
-                          <div className="text-sm font-medium text-slate-700">
+                        <div className="flex items-center justify-between mt-0.5 pt-1 border-t border-gray-50">
+                          <div className="text-[11px] font-medium text-slate-700">
                             No. of student's enrolled:{" "}
                             <span className="font-bold">
                               {quiz.participants}
                             </span>
                           </div>
-                          <button className="flex items-center gap-1 text-sm font-bold text-slate-900 hover:text-emerald-600 transition-colors cursor-pointer group">
+                          <button
+                            onClick={() =>
+                              router.push(`/instructor/quizzes/${quiz._id}`)
+                            }
+                            className="flex items-center gap-0.5 text-[11px] font-bold text-slate-900 hover:text-emerald-600 transition-colors cursor-pointer group"
+                          >
                             Open
-                            <ArrowRight className="w-4 h-4 text-emerald-500 group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight className="w-3 h-3 text-emerald-500 group-hover:translate-x-0.5 transition-transform" />
                           </button>
                         </div>
                       </div>
@@ -136,11 +167,16 @@ export default function QuizzPage() {
 
           {/* Completed Quizzes */}
           <div className="bg-white border border-gray-200 rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-slate-900">
                 Completed Quizzes
               </h2>
-              <button className="flex items-center gap-1 text-sm font-bold text-emerald-600 hover:underline cursor-pointer group">
+              <button
+                onClick={() => {
+                  router.push("/instructor/results");
+                }}
+                className="flex items-center gap-1 text-sm font-bold text-emerald-600 hover:underline cursor-pointer group"
+              >
                 Results
                 <ArrowRight className="w-4 h-4 text-emerald-500 group-hover:translate-x-1 transition-transform" />
               </button>
@@ -159,14 +195,16 @@ export default function QuizzPage() {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-[#0b132b] text-white">
-                      <th className="p-3 text-sm font-semibold rounded-tl-lg">
+                      <th className="py-1.5 px-3 text-sm font-semibold rounded-tl-lg">
                         Title
                       </th>
-                      <th className="p-3 text-sm font-semibold">Group name</th>
-                      <th className="p-3 text-sm font-semibold">
+                      <th className="py-1.5 px-3 text-sm font-semibold">
+                        Difficulty
+                      </th>
+                      <th className="py-1.5 px-3 text-sm font-semibold">
                         No. of persons in group
                       </th>
-                      <th className="p-3 text-sm font-semibold rounded-tr-lg">
+                      <th className="py-1.5 px-3 text-sm font-semibold rounded-tr-lg">
                         Date
                       </th>
                     </tr>
@@ -177,19 +215,17 @@ export default function QuizzPage() {
                         key={quiz._id}
                         className="hover:bg-gray-50/80 transition-colors"
                       >
-                        <td className="p-3 text-sm font-medium text-slate-900 border border-gray-200">
+                        <td className="py-1.5 px-3 text-sm font-medium text-slate-900 border border-gray-200">
                           {quiz.title}
                         </td>
-                        <td className="p-3 text-sm text-slate-600 border border-gray-200">
-                          {quiz.group === "65c2bed779b859ea9320885f"
-                            ? "Group 1"
-                            : "JSB"}
+                        <td className="py-1.5 px-3 text-sm text-slate-600 border border-gray-200">
+                          {quiz.difficulty}
                         </td>
-                        <td className="p-3 text-sm text-slate-600 border border-gray-200">
+                        <td className="py-1.5 px-3 text-sm text-slate-600 border border-gray-200">
                           {quiz.participants} persons
                         </td>
-                        <td className="p-3 text-sm text-slate-600 border border-gray-200">
-                          {formatDate(quiz.schadule).date}
+                        <td className="py-1.5 px-3 text-sm text-slate-600 border border-gray-200">
+                          {formatDate(quiz.createdAt).date}
                         </td>
                       </tr>
                     ))}
@@ -201,15 +237,17 @@ export default function QuizzPage() {
         </div>
       </div>
 
-      {/* Modal */}
       <CreateQuizModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSuccess={fetchQuizzes}
+        onSuccess={handleQuizCreateSuccess}
+      />
+
+      <QuizSuccessModal
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        quizCode={createdQuizCode}
       />
     </div>
-
-    
-    </>
   );
 }
