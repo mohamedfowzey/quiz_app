@@ -10,7 +10,7 @@ export interface Quiz {
   group: string;
   questions_number: number;
   questions: string[];
-  schadule: string; //
+  schadule: string;
   duration: number;
   score_per_question: number;
   type: string;
@@ -26,12 +26,14 @@ export interface CreateQuizData {
   title: string;
   description?: string;
   group: string;
-  questions: string[];
+  questions_number: number;
   schadule: string;
   duration: number;
   score_per_question: number;
   type: string;
   difficulty: string;
+  date?: string;
+  time?: string;
 }
 
 export interface UpdateQuizData extends Partial<CreateQuizData> {
@@ -97,17 +99,15 @@ export const apiGetQuestionsWithoutAnswers = (quizId: string) => {
 
 // GET: allResults
 export const apiGetAllQuizResults = () => {
-  return axiosClient.get("/api/quiz/results");
+  return axiosClient.get("/api/quiz/result");
 };
 
-// GET: firstFiveIncomming
-export const apiGetFirstFiveIncoming = () => {
-  return axiosClient.get<Quiz[]>("/api/quiz/incoming/first-five");
+export const apiGetIncomingQuizzes = () => {
+  return axiosClient.get<Quiz[]>("/api/quiz/incomming");
 };
 
-// GET: lastFiveCompleted
-export const apiGetLastFiveCompleted = () => {
-  return axiosClient.get<Quiz[]>("/api/quiz/completed/last-five");
+export const apiGetCompletedQuizzes = () => {
+  return axiosClient.get<Quiz[]>("/api/quiz/completed");
 };
 
 // POST: reassign
