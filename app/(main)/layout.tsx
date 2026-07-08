@@ -1,21 +1,21 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import {   SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { ReactNode } from "react";
+import Navbar from "../(components)/main_components/header/NavBar";
 
-export default function Main({children}:{children:ReactNode}){
-    return (<>
-        <div className="flex ">
-                <SidebarProvider>
-            <div className="flex-0 ">
-                <AppSidebar/>
-            </div>
-            <div className="flex-1 min-w-0 ">
-                    <SidebarTrigger/>
-                <nav>bnavbar</nav>
+export default function Main({ children }: { children: ReactNode }) {
+  return (
+    <>
+      <SidebarProvider>
+        <div className="flex w-full">
+          <AppSidebar />
 
-    {children}
-            </div>
-                </SidebarProvider>
+          <div className="grow  ">
+              <Navbar />
+            {children}
+          </div>
         </div>
-    </>)
+      </SidebarProvider>
+    </>
+  );
 }

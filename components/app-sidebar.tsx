@@ -1,182 +1,151 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
-import Image from "next/image"
-import logo from "@/public/images/Logo icon.png"
+import Image from "next/image";
+import logo from "@/public/images/Logo icon.png";
+import homeIcon from "@/public/images/Dashboard icon.svg";
+import group from "@/public/images/Students icon.png";
+import help from "@/public/images/help icon.png";
+import quiz from "@/public/images/Quiz icon.svg";
+import result from "@/public/images/result.png";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import {   TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon, AudioLinesIcon } from "lucide-react"
+} from "@/components/ui/sidebar";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // This is sample data.
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: (
-        <Image width={50} height={60} src={logo.src} alt="Acme Inc" />
-        
-      ),
-      plan: "Enterprise",
-    },
-    
-    
-  ],
-  navMain: [
-    {
-      title: "Playground",
-      url: "#",
-      icon: (
-        <TerminalSquareIcon
-        />
-      ),
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: (
-        <BotIcon
-        />
-      ),
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: (
-        <BookOpenIcon
-        />
-      ),
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: (
-        <Settings2Icon
-        />
-      ),
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: (
-        <FrameIcon
-        />
-      ),
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: (
-        <PieChartIcon
-        />
-      ),
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: (
-        <MapIcon
-        />
-      ),
-    },
-  ],
-}
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
+  const pathEnteries = pathname.split("/");
+  const role = pathEnteries[1];
+  const activeLink = pathEnteries[2];
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <div className="flex py-4 items-center justify-center">
+          <Image src={logo.src} alt="Logo" width={65} height={40} />
+        </div>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <SidebarMenu>
+          <SidebarMenuItem className="group-data-[state=collapsed]:mb-8 flex items-center justify-center">
+            <SidebarMenuButton
+              size={"lg"}
+              asChild
+              className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === "dashboard" && "border-r-8 border-dark group-data-[state=collapsed]:border-r group-data-[state=collapsed]:block"}`}
+            >
+              <Link
+                href={`/${role}/dashboard`}
+                className="flex items-center gap-3 border-r-0"
+              >
+                <Image
+                  src={homeIcon.src}
+                  alt="Logo"
+                  width={40}
+                  height={40}
+                  className="bg-light p-0.5"
+                />
+                <span>dashboard</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem className="group-data-[state=collapsed]:mb-8 flex items-center justify-center">
+            <SidebarMenuButton
+              size={"lg"}
+              asChild
+              className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === "quizes" && "border-r-8 border-dark group-data-[state=collapsed]:border-r group-data-[state=collapsed]:block"}`}
+            >
+              <Link
+                href={`/${role}/quizzes`}
+                className="flex items-center gap-3 border-r-0"
+              >
+                <Image
+                  src={quiz.src}
+                  alt="Logo"
+                  width={40}
+                  height={40}
+                  className="bg-light p-0.5"
+                />
+                <span>quizes</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem className="group-data-[state=collapsed]:mb-8 flex items-center justify-center">
+            <SidebarMenuButton
+              size={"lg"}
+              asChild
+              className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === "groups" && "border-r-8 border-dark group-data-[state=collapsed]:border-r group-data-[state=collapsed]:block"}`}
+            >
+              <Link
+                href={`/${role}/groups`}
+                className="flex items-center w-full! gap-3 border-r-0"
+              >
+                <Image
+                  src={group.src}
+                  alt="Logo"
+                  width={40}
+                  height={40}
+                  className="bg-light p-0.5"
+                />
+                <span>Groups</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem className="group-data-[state=collapsed]:mb-8 flex items-center justify-center">
+            <SidebarMenuButton
+              size={"lg"}
+              asChild
+              className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === "results" && "border-r-8 border-dark group-data-[state=collapsed]:border-r group-data-[state=collapsed]:w-full! group-data-[state=collapsed]:block!"}`}
+            >
+              <Link
+                href={`/${role}/results`}
+                className="flex items-center gap-3 border-r-0"
+              >
+                <Image
+                  src={result.src}
+                  alt="Logo"
+                  width={40}
+                  height={40}
+                  className="bg-light p-0.5"
+                />
+                <span>Results</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+         
+         
+        </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <SidebarMenuButton
+          size={"lg"}
+          asChild
+          className=" text-lg border-gray-400 "
+        >
+          <Link href={`/${role}/results`} className="flex items-center gap-3 ">
+            <Image
+              src={help.src}
+              alt="Logo"
+              width={40}
+              height={40}
+              className="bg-light p-0.5"
+            />
+            <span>Help</span>
+          </Link>
+        </SidebarMenuButton>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
