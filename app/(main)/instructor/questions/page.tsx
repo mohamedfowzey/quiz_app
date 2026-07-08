@@ -1,8 +1,8 @@
-import { CustomTable, Question } from '@/app/(components)/dashboardShard/customTable/customTable'
+import { QuestionsClient } from '@/app/(components)/dashboardShard/questionsClient/QuestionsClient'
+import { Question } from '@/app/(components)/dashboardShard/customTable/customTable'
 import { cookies } from 'next/headers'
 
 export default async function Questions() {
-
   const cookieStore = await cookies()
   const token = cookieStore.get('auth_token')?.value
 
@@ -14,18 +14,18 @@ export default async function Questions() {
   })
 
   if (!res.ok) {
-    return <p> faild to fetch questions: {res.status}</p>
+    return <p>failed to fetch questions: {res.status}</p>
   }
 
   const data = await res.json()
 
-  const questions = data.map((item: Question) => ({
+  const questions: Question[] = data.map((item: Question) => ({
     _id: item._id,
-    questionTitle: item.questionTitle,
-    questionDesc: item.questionDesc,
-    questionDifficultyLevel: item.questionDifficultyLevel,
-    questionType: item.questionType,
+    title: item.title,
+    description: item.description,
+    difficulty: item.difficulty,
+    type: item.type,
   }))
 
-  return <CustomTable questions={questions} token={token} />
+  return <QuestionsClient initialQuestions={questions} token={token} />
 }
