@@ -144,8 +144,8 @@ letter-spacing: 0%;
 color: rgba(197, 216, 109, 1) ;
 
 }
-span[data-slot="select-value"]{
-  color: white !important;
+.auth span[data-slot="select-value"]{
+  color: white ;
 }
 input{caret-color: var(--color-accent);caret-shape: block; caret-animation: auto;}
 input:-webkit-autofill,

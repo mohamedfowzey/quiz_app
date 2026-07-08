@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { apiCreateQuiz, CreateQuizData } from "@/app/api/quizApi/QuizApis";
 import { getGroups } from "@/lib/group-service";
+import axios from "axios";
 
 interface CreateQuizModalProps {
   isOpen: boolean;
@@ -117,7 +118,10 @@ export default function CreateQuizModal({
       reset();
       onSuccess(generatedCode);
     } catch (error) {
-      toast.error("Failed to create quiz. Please try again.");
+      if(axios.isAxiosError(error)){
+
+        toast.error(error?.response?.data?.message||"Failed to create quiz. Please try again.");
+      }
       console.error("API Error:", error);
     }
   };

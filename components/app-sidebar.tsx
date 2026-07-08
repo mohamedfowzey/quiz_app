@@ -64,7 +64,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton
               size={"lg"}
               asChild
-              className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === "quizes" && "border-r-8 border-dark group-data-[state=collapsed]:border-r group-data-[state=collapsed]:block"}`}
+              className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === "quizzes" && "border-r-8 border-dark group-data-[state=collapsed]:border-r group-data-[state=collapsed]:block"}`}
             >
               <Link
                 href={`/${role}/quizzes`}
@@ -133,7 +133,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           asChild
           className=" text-lg border-gray-400 "
         >
-          <Link href={`/${role}/results`} className="flex items-center gap-3 ">
+          <Link href='#' className="flex items-center gap-3 ">
             <Image
               src={help.src}
               alt="Logo"

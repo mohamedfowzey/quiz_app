@@ -107,8 +107,8 @@ const UpcomingQuizzes = async () => {
 
               {/* "Open" action link with arrow */}
               <div className="self-end mt-1">
-                <a
-                  href="#"
+                <Link
+                  href={`/instructor/quizzes/${quiz._id}`}
                   className="flex items-center text-sm font-semibold text-neutral-800 hover:text-neutral-950 transition-colors"
                 >
                   Open
@@ -128,7 +128,7 @@ const UpcomingQuizzes = async () => {
                       />
                     </svg>
                   </div>
-                </a>
+                </Link>
               </div>
             </div>
           </div>

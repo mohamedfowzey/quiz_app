@@ -142,7 +142,7 @@ export default function QuizzPage() {
 
                         <div className="flex items-center justify-between mt-0.5 pt-1 border-t border-gray-50">
                           <div className="text-[11px] font-medium text-slate-700">
-                            No. of student's enrolled:{" "}
+                            No. of stuudent's enrolled:{" "}
                             <span className="font-bold">
                               {quiz.participants}
                             </span>

@@ -32,7 +32,7 @@ export default async function Navbar() {
   console.log(userData);
 
   return (
-    <nav className="w-full bg-white px-6 py-4 flex items-center justify-between font-sans">
+    <nav className="w-full bg-white px-6 py-4 sticky top-0 z-50 flex items-center justify-between font-sans">
       {/* Left Section: Logo */}
       <SidebarTrigger />
       <div className="flex items-center pl-4 border-l border-gray-100 h-full">
@@ -75,7 +75,7 @@ export default async function Navbar() {
               <DropdownMenuGroup>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>change pass</DropdownMenuItem>
+                <DropdownMenuItem><Link href={'/change_password'}>change pass</Link></DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>

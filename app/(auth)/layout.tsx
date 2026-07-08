@@ -4,7 +4,7 @@ import logo from "@/public/images/logo.png"
 
 export default function Auth({ children }: { children: ReactNode }) {
     return (
-        <div className="h-screen w-full bg-dark p-10 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="auth h-screen w-full bg-dark p-10 grid grid-cols-1 md:grid-cols-2 gap-8">
 
             <div className="flex relative h-full overflow-auto scrollbar-none flex-col items-center justify-center  md:px-10">
                 <img

@@ -7,7 +7,9 @@ import { Input } from "@/components/ui/input"
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
@@ -143,7 +145,7 @@ const handleDeleted = (id: string) => {
         
 
         <Select value={difficulty} onValueChange={handleDifficultyChange}>
-          <SelectTrigger className="w-[20%]">
+          <SelectTrigger className="w-[20%]" >
             <SelectValue placeholder="Difficulty" />
           </SelectTrigger>
           <SelectContent>
@@ -156,13 +158,17 @@ const handleDeleted = (id: string) => {
 
         <Select value={type} onValueChange={handleTypeChange}>
           <SelectTrigger className="w-[20%]">
-            <SelectValue placeholder="Category" />
+            <SelectValue placeholder="Category" color="red"/>
           </SelectTrigger>
           <SelectContent>
+            <SelectGroup>
+
+            <SelectLabel>category</SelectLabel>
             <SelectItem value="all">All Types</SelectItem>
             <SelectItem value="FE">FE</SelectItem>
             <SelectItem value="BE">BE</SelectItem>
             <SelectItem value="DO">DO</SelectItem>
+            </SelectGroup>
           </SelectContent>
         </Select>
 
