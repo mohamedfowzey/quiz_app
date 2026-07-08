@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { apiGetAllQuizResults } from "@/app/api/quizApi/QuizApis";
+import { apiGetAllQuizzes } from "@/app/api/quizApi/QuizApis";
 
-interface QuizDetails {
+interface QuizItem {
   _id: string;
   title: string;
   questions_number: number;
@@ -11,33 +11,34 @@ interface QuizDetails {
   difficulty?: string;
   type?: string;
   duration?: number;
+  code?: string;
 }
 
-interface QuizResultItem {
-  quiz: QuizDetails;
-}
-
-export default function ResultsPage() {
+export default function QuizzesPage() {
   const router = useRouter();
-  const [results, setResults] = useState<QuizResultItem[]>([]);
+  const [quizzes, setQuizzes] = useState<QuizItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchResults = async () => {
+    const fetchQuizzes = async () => {
       try {
         setLoading(true);
-        const response = await apiGetAllQuizResults();
+        const response = await apiGetAllQuizzes();
+
         if (response && response.data) {
-          setResults(response.data);
+          const fetchedData = Array.isArray(response.data)
+            ? response.data
+            : response.data.data || [];
+          setQuizzes(fetchedData);
         }
       } catch (error) {
-        console.error("Error fetching all quiz results:", error);
+        console.error("Error fetching all quizzes:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchResults();
+    fetchQuizzes();
   }, []);
 
   const formatDate = (isoString: string) => {
@@ -55,17 +56,15 @@ export default function ResultsPage() {
   return (
     <div className="p-4 md:p-6 mx-auto min-h-screen text-gray-900">
       <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-6 shadow-sm">
-        <h2 className="text-xl font-bold text-slate-900 mb-5">
-          Completed Quizzes
-        </h2>
+        <h2 className="text-xl font-bold text-slate-900 mb-5">All Quizzes</h2>
 
         {loading ? (
           <div className="text-center py-8 text-gray-500 font-medium">
-            Loading results...
+            Loading quizzes...
           </div>
-        ) : !results || results.length === 0 ? (
+        ) : !quizzes || quizzes.length === 0 ? (
           <div className="text-center py-8 text-gray-400 font-medium">
-            No completed quizzes available.
+            No quizzes available.
           </div>
         ) : (
           <div>
@@ -102,32 +101,30 @@ export default function ResultsPage() {
               >
                 <table className="w-full border-collapse text-left bg-white table-fixed min-w-[700px]">
                   <tbody className="divide-y divide-gray-200">
-                    {results.map((item) => (
+                    {quizzes.map((item) => (
                       <tr
-                        key={item.quiz?._id}
+                        key={item._id}
                         className="hover:bg-gray-50/60 transition-colors h-[52px]"
                       >
                         <td className="py-3 px-4 text-sm font-medium text-slate-800 border-r border-gray-200 capitalize truncate w-[25%]">
-                          {item.quiz?.title || "Untitled Quiz"}
+                          {item.title || "Untitled Quiz"}
                         </td>
                         <td className="py-3 px-4 text-sm text-slate-600 border-r border-gray-200 capitalize truncate w-[15%]">
-                          {item.quiz?.difficulty || "medium"}
+                          {item.difficulty || "medium"}
                         </td>
                         <td className="py-3 px-4 text-sm text-slate-600 border-r border-gray-200 truncate w-[20%]">
-                          {item.quiz?.questions_number || 0}
+                          {item.questions_number || 0}
                         </td>
                         <td className="py-3 px-4 text-sm text-slate-600 border-r border-gray-200 truncate w-[15%]">
-                          {item.quiz?.duration || 0} minutes
+                          {item.duration || 0} minutes
                         </td>
                         <td className="py-3 px-4 text-sm text-slate-600 border-r border-gray-200 truncate w-[15%]">
-                          {formatDate(item.quiz?.schadule)}
+                          {formatDate(item.schadule)}
                         </td>
                         <td className="py-2 px-4 text-center w-[10%]">
                           <button
                             onClick={() =>
-                              router.push(
-                                `/instructor/results/${item.quiz?._id}`,
-                              )
+                              router.push(`/instructor/quizzes/${item._id}`)
                             }
                             className="w-full bg-[#c5e1a5] hover:bg-[#b3d78c] text-slate-900 font-bold text-xs py-1.5 px-3 rounded-xl transition-all shadow-xs cursor-pointer"
                           >
@@ -142,18 +139,17 @@ export default function ResultsPage() {
             </div>
 
             <div className="block md:hidden flex flex-col gap-4">
-              {results.map((item) => (
+              {quizzes.map((item) => (
                 <div
-                  key={item.quiz?._id}
+                  key={item._id}
                   className="bg-gray-50/50 border border-gray-200 rounded-xl p-4 flex flex-col gap-3 shadow-xs"
                 >
-                  {/* العنوان والـ Difficulty */}
                   <div className="flex justify-between items-start gap-2">
                     <h3 className="font-bold text-base text-slate-800 capitalize truncate">
-                      {item.quiz?.title || "Untitled Quiz"}
+                      {item.title || "Untitled Quiz"}
                     </h3>
                     <span className="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-700 rounded-lg capitalize shrink-0">
-                      {item.quiz?.difficulty || "medium"}
+                      {item.difficulty || "medium"}
                     </span>
                   </div>
 
@@ -163,7 +159,7 @@ export default function ResultsPage() {
                         Questions
                       </span>
                       <span className="font-semibold text-slate-700">
-                        {item.quiz?.questions_number || 0} Qs
+                        {item.questions_number || 0} Qs
                       </span>
                     </div>
                     <div>
@@ -171,13 +167,13 @@ export default function ResultsPage() {
                         Duration
                       </span>
                       <span className="font-semibold text-slate-700">
-                        {item.quiz?.duration || 0} mins
+                        {item.duration || 0} mins
                       </span>
                     </div>
                     <div className="col-span-2">
                       <span className="text-gray-400 block mb-0.5">Date</span>
                       <span className="font-semibold text-slate-700">
-                        {formatDate(item.quiz?.schadule)}
+                        {formatDate(item.schadule)}
                       </span>
                     </div>
                   </div>
@@ -185,7 +181,7 @@ export default function ResultsPage() {
                   <div className="border-t border-gray-100 pt-3 mt-1">
                     <button
                       onClick={() =>
-                        router.push(`/instructor/results/${item.quiz?._id}`)
+                        router.push(`/instructor/quizzes/${item._id}`)
                       }
                       className="w-full bg-[#c5e1a5] hover:bg-[#b3d78c] text-slate-900 font-bold text-sm py-2 px-4 rounded-xl transition-all shadow-xs text-center cursor-pointer"
                     >
