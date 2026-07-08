@@ -2,42 +2,34 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import alarm from "@/public/images/Quizzes/Linker.jpeg";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import LogoutButton from '@/components/ui/logoutBtn';
-import { SidebarTrigger } from '@/components/ui/sidebar';
-import alarm from '@/public/images/Quizzes/Linker.jpeg';
-import { jwtDecode } from 'jwt-decode';
-import { ArrowBigDown, ChevronDown, LogOut } from 'lucide-react';
-import { cookies } from 'next/headers';
-import Image from 'next/image';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import LogoutButton from "@/components/ui/logoutBtn";
+import { jwtDecode } from "jwt-decode";
+import { ChevronDown } from "lucide-react";
+import { cookies } from "next/headers";
 
-interface profile{
-  
-email
-: 
-string
-exp
-: 
-number
-iat
-: 
-number
-role
-: 
-string
-sub
-: 
-string
+interface profile {
+  email: string;
+  exp: number;
+  iat: number;
+  role: string;
+  sub: string;
 }
 
 export default async function Navbar() {
-  const cookiesStore = await cookies()
-  const token = cookiesStore.get('auth_token')?.value;
-  
-  const userData : profile|undefined = jwtDecode(token || '');
+  const cookiesStore = await cookies();
+  const token = cookiesStore.get("auth_token")?.value;
+
+  const userData: profile | undefined = jwtDecode(token || "");
   console.log(userData);
-  
 
   return (
     <nav className="w-full bg-white px-6 py-4 flex items-center justify-between font-sans">
@@ -75,24 +67,22 @@ export default async function Navbar() {
 
           {/* Dropdown Chevron Arrow */}
 
-          <DropdownMenu >
-  <DropdownMenuTrigger >
-    <ChevronDown/>
-    
-  </DropdownMenuTrigger>
-  <DropdownMenuContent>
-    <DropdownMenuGroup>
-      <DropdownMenuLabel>My Account</DropdownMenuLabel>
-      <DropdownMenuItem>Profile</DropdownMenuItem>
-      <DropdownMenuItem>change pass</DropdownMenuItem>
-      
-    </DropdownMenuGroup>
-    <DropdownMenuSeparator />
-    <DropdownMenuGroup>
-      <LogoutButton/>
-    </DropdownMenuGroup>
-  </DropdownMenuContent>
-</DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <ChevronDown />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>change pass</DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <LogoutButton />
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {/* <svg 
             className="w-3 h-3 text-gray-400 group-hover:text-gray-600 transition-colors" 
