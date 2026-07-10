@@ -12,7 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import LogoutButton from "@/components/ui/logoutBtn";
 import { jwtDecode } from "jwt-decode";
 import { ChevronDown, LogOut } from "lucide-react";
 import  Cookies  from "js-cookie";
@@ -86,7 +85,6 @@ export default  function Navbar() {
             <DropdownMenuContent>
               <DropdownMenuGroup>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuItem>Profile</DropdownMenuItem>
                 <DropdownMenuItem><Link href={'/change_password'}>change pass</Link></DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
