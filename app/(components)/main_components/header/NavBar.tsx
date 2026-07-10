@@ -1,3 +1,4 @@
+'use client'
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import alarm from "@/public/images/Quizzes/Linker.jpeg";
 import Image from "next/image";
@@ -13,10 +14,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import LogoutButton from "@/components/ui/logoutBtn";
 import { jwtDecode } from "jwt-decode";
-import { ChevronDown } from "lucide-react";
-import { cookies } from "next/headers";
+import { ChevronDown, LogOut } from "lucide-react";
+import  Cookies  from "js-cookie";
+import { AlertDialogDestructive } from "../../dashboardShard/deleteConfirmation/DeleteConfirmation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-interface profile {
+export interface profile {
   email: string;
   exp: number;
   iat: number;
@@ -24,12 +28,20 @@ interface profile {
   sub: string;
 }
 
-export default async function Navbar() {
-  const cookiesStore = await cookies();
-  const token = cookiesStore.get("auth_token")?.value;
+export default  function Navbar() {
+    const [logoutConfirm,setLogoutConfirm] = useState(false);
+
+  const token =  Cookies.get("auth_token");
 
   const userData: profile | undefined = jwtDecode(token || "");
-  console.log(userData);
+    const router = useRouter();
+
+   const logout = () => { 
+    
+    Cookies.remove("auth_token");
+
+    router.push("/login");
+  };
 
   return (
     <nav className="w-full bg-white px-6 py-4 sticky top-0 z-50 flex items-center justify-between font-sans">
@@ -79,10 +91,14 @@ export default async function Navbar() {
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <LogoutButton />
+                <DropdownMenuItem onClick={()=>setLogoutConfirm(true)} className='hover:bg-red-600! hover:text-dark z-50 text-red-600'>
+
+   log out <LogOut />
+  </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
+  <AlertDialogDestructive  title="logout" tDescription="are ou sure you want to logout" onDelete={logout} onOpenChange={()=>setLogoutConfirm(false)} open={logoutConfirm}/>
 
           {/* <svg 
             className="w-3 h-3 text-gray-400 group-hover:text-gray-600 transition-colors" 

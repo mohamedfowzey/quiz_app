@@ -7,48 +7,7 @@ import { toast } from 'sonner';
 
 
 // Sample student data extracted from the image
-const studentsData = [
-  {
-    id: 1,
-    name: 'Emmanuel James',
-    rank: '2nd',
-    score: '87%',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-    avatarBg: 'bg-[#7BB4CB]',
-  },
-  {
-    id: 2,
-    name: 'Alice Jasmine',
-    rank: '12th',
-    score: '65%',
-    avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200',
-    avatarBg: 'bg-[#DCAE6F]',
-  },
-  {
-    id: 3,
-    name: 'Harrison Menlaye',
-    rank: '17th',
-    score: '60%',
-    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
-    avatarBg: 'bg-[#18181B]',
-  },
-  {
-    id: 4,
-    name: 'Jones Doherty',
-    rank: '5th',
-    score: '80%',
-    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200',
-    avatarBg: 'bg-[#E29A6E]',
-  },
-  {
-    id: 5,
-    name: 'Emmanuel James',
-    rank: '2nd',
-    score: '87%',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-    avatarBg: 'bg-[#7BB4CB]',
-  },
-];
+
 
 export default async function TopStudents() {
   const cokies = await cookies()
@@ -59,7 +18,6 @@ export default async function TopStudents() {
     }
   
   }).then(res => res.json()).catch(err => toast.error(err?.message || 'Failed to fetch students data'));
-  console.log(allStudents);
   
   const topStudents: Student[] = allStudents.slice(0, 5);
   return (

@@ -1,4 +1,4 @@
-import { Trash2Icon, Loader2Icon } from "lucide-react"
+import { Trash2Icon, Loader2Icon, LogOut } from "lucide-react"
 
 import {
   AlertDialog,
@@ -24,7 +24,7 @@ export function AlertDialogDestructive({
   tDescription: string
   onDelete: () => void
   open: boolean
-  onOpenChange: (open: boolean) => void
+  onOpenChange: () => void
   loading?: boolean
 }) {
   return (
@@ -32,13 +32,15 @@ export function AlertDialogDestructive({
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+           {title === 'logout' ? <LogOut/>:
             <Trash2Icon />
+           }
           </AlertDialogMedia>
-          <AlertDialogTitle>Delete {title}</AlertDialogTitle>
+          <AlertDialogTitle>{title!=='logout' && 'Delete'} {title}</AlertDialogTitle>
           <AlertDialogDescription>{tDescription}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel variant="outline" disabled={loading}>
+          <AlertDialogCancel variant="outline" disabled={loading} onClick={onOpenChange}>
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
@@ -52,10 +54,13 @@ export function AlertDialogDestructive({
             {loading ? (
               <>
                 <Loader2Icon className="animate-spin" />
-                Deleting...
+                {title === 'logout' ? 'logingout...' : 'Deleting...'}
               </>
             ) : (
-              "Delete"
+              
+
+              title !== 'logout'?  "Delete" : 'logout'
+              
             )}
           </AlertDialogAction>
         </AlertDialogFooter>

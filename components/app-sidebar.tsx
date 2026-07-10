@@ -22,6 +22,7 @@ import {
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import OnlyInstructor from "@/app/(components)/main_components/OnlyInstructor/OnlyInstructor";
 
 // This is sample data.
 
@@ -81,6 +82,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
+          <OnlyInstructor>
+
           <SidebarMenuItem className="group-data-[state=collapsed]:mb-8 flex items-center justify-center">
             <SidebarMenuButton
               size={"lg"}
@@ -90,7 +93,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <Link
                 href={`/${role}/groups`}
                 className="flex items-center w-full! gap-3 border-r-0"
-              >
+                >
                 <Image
                   src={group.src}
                   alt="Logo"
@@ -102,6 +105,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
+                  </OnlyInstructor>
           <SidebarMenuItem className="group-data-[state=collapsed]:mb-8 flex items-center justify-center">
             <SidebarMenuButton
               size={"lg"}
