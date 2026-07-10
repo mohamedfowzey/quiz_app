@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ArrowRight, Calendar } from "lucide-react";
 import alarm from "@/public/images/Quizzes/Linker.jpeg";
 import question from "@/public/images/Quizzes/Linker2.jpeg";
@@ -11,18 +11,35 @@ import {
   apiGetIncomingQuizzes,
   apiGetCompletedQuizzes,
   Quiz,
+  JoinQuizData,
 } from "@/app/api/quizApi/QuizApis";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import OnlyInstructor from "@/app/(components)/main_components/OnlyInstructor/OnlyInstructor";
+import OnlyLearner from "@/app/(components)/main_components/OnlyLearner/OnlyLearner";
+import JoinQuizDialog from "./JoinModal";
 
 export default function QuizzPage() {
+  const params = usePathname()
+  const role = params.split('/')[1];
+  console.log('role from learner dashboard: ',role);
+  
   const router = useRouter();
   const [upcomingQuizzes, setUpcomingQuizzes] = useState<Quiz[]>([]);
-  const [completedQuizzes, setCompletedQuizzes] = useState<Quiz[]>([]);
+  const [completedQuizzes, setCompletedQuizzes]   = useState<Quiz[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
   const [createdQuizCode, setCreatedQuizCode] = useState<string>("");
+
+  const [joinModal,setJoinModal] = useState(false);
+
+  const onjionQuizz = useCallback(
+    (data : JoinQuizData)=>{
+      console.log(data);
+      
+    },[]
+  )
 
   const fetchQuizzes = async () => {
     try {
@@ -43,7 +60,10 @@ export default function QuizzPage() {
   };
 
   useEffect(() => {
-    fetchQuizzes();
+    (()=>{
+
+      fetchQuizzes();
+    })()
   }, []);
 
   const formatDate = (isoString: string) => {
@@ -67,10 +87,12 @@ export default function QuizzPage() {
     <div className="p-6 mx-auto min-h-screen text-gray-900">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
         <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-row gap-7">
+          <OnlyInstructor>
+
           <button
             onClick={() => setIsModalOpen(true)}
             className="w-full h-[150px] bg-white border border-gray-200 rounded-2xl flex flex-col items-center justify-center gap-2 hover:shadow-md transition-all cursor-pointer group text-center"
-          >
+            >
             <div className="group-hover:scale-105 transition-transform">
               <Image src={alarm} alt="Alarm" width={60} height={60} />
             </div>
@@ -92,6 +114,20 @@ export default function QuizzPage() {
               Question Bank
             </span>
           </button>
+            </OnlyInstructor>
+            <OnlyLearner>
+              <button
+            onClick={() => setJoinModal(true)}
+            className="w-full h-[150px] bg-white border border-gray-200 rounded-2xl flex flex-col items-center justify-center gap-2 hover:shadow-md transition-all cursor-pointer group text-center"
+            >
+            <div className="group-hover:scale-105 transition-transform">
+              <Image src={alarm} alt="Alarm" width={60} height={60} />
+            </div>
+            <span className="font-bold sm:text-[14px] text-slate-800 leading-tight">
+              join quiz
+            </span>
+          </button>
+            </OnlyLearner>
         </div>
 
         <div className="lg:col-span-8 flex flex-col gap-8">
@@ -236,6 +272,7 @@ export default function QuizzPage() {
           </div>
         </div>
       </div>
+<OnlyInstructor>
 
       <CreateQuizModal
         isOpen={isModalOpen}
@@ -248,6 +285,10 @@ export default function QuizzPage() {
         onClose={() => setIsSuccessModalOpen(false)}
         quizCode={createdQuizCode}
       />
+        </OnlyInstructor>
+        <OnlyLearner>
+          <JoinQuizDialog isOpen={joinModal} onCancel={()=>setJoinModal(false) } onJoin={onjionQuizz}/>
+        </OnlyLearner>
     </div>
   );
 }

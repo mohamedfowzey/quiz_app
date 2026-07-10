@@ -1,5 +1,4 @@
 import UpcomingQuizzes from "@/app/(components)/main_components/UpCommingQuizzes/UpCommingQuizzes";
-import LogoutButton from "@/components/ui/logoutBtn";
 import TopStudents from "@/app/(components)/main_components/TopStudents/TopStudents";
 
 export default function Dashboard() {

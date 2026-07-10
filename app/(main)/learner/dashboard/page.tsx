@@ -1,3 +1,8 @@
+import QuizzPage from "../../instructor/quizzes/page";
+
 export default function Dashboard(){
-    return <h1>dashboard for learner</h1>
+    return (
+
+        <QuizzPage/>
+    )
 }
