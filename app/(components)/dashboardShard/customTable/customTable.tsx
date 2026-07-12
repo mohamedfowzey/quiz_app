@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from "react"
 import { Eye, LucideTrash2, MoreHorizontalIcon, SquarePen } from "lucide-react"
+import { useState } from "react"
 import { DialogQuestions, QuestionData } from "../dialogQuestions/DialogQuestions"
 import { ViewQuestionDialog } from "../viewQuestion/ViewQuestionDialog"
 
@@ -22,8 +22,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { AlertDialogDestructive } from "../deleteConfirmation/DeleteConfirmation"
 import { toast } from "sonner"
+import { AlertDialogDestructive } from "../deleteConfirmation/DeleteConfirmation"
 
 export interface Question {
   _id: string
@@ -225,7 +225,7 @@ export function CustomTable({ questions, token, onUpdated, onDeleted }: CustomTa
 
       {/* Table — lg and above */}
       <div className="hidden lg:block">
-        <Table className="w-[95%] mx-auto my-2 text-center rounded-tl-xl overflow-hidden rounded-tr-xl">
+        <Table className="w-[90%] mx-auto my-2 text-center rounded-tl-xl overflow-hidden rounded-tr-xl">
           <TableHeader>
             <TableRow className="bg-[#0b132b] hover:bg-[#0b132b] hover:cursor-pointer border overflow-hidden rounded-tl-xl text-white">
               <TableHead className="text-center text-white border rounded-tl-xl">Question Title</TableHead>
@@ -239,7 +239,7 @@ export function CustomTable({ questions, token, onUpdated, onDeleted }: CustomTa
             {questions.map((q) => (
               <TableRow key={q._id}>
                 <TableCell className="border">{q.title}</TableCell>
-                <TableCell className="border">{q.description}</TableCell>
+                <TableCell className="border max-w-md truncate">{q.description}</TableCell>
                 <TableCell className="border">{q.difficulty}</TableCell>
                 <TableCell className="border">{q.type}</TableCell>
                 <TableCell className="border">
@@ -277,7 +277,7 @@ export function CustomTable({ questions, token, onUpdated, onDeleted }: CustomTa
       {/* Delete Dialog */}
       <AlertDialogDestructive
         open={dialogOpen}
-        onOpenChange={setDialogOpen}
+        onOpenChange={() => setDialogOpen(false)}
         title="Question"
         tDescription="Are you sure you want to delete this question? This action cannot be undone."
         onDelete={confirmDelete}

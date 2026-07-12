@@ -44,10 +44,11 @@ export interface JoinQuizData {
   code: string;
 }
 
+
+
 export interface SubmitQuizData {
-  quizId: string;
   answers: {
-    questionId: string;
+    question: string;
     answer: string;
   }[];
 }
@@ -57,6 +58,21 @@ export interface ReassignQuizData {
   studentIds: string[];
 }
 
+export interface QuizDetails {
+    _id: string
+    title: string
+    questions: {
+        _id: string
+        title: string
+        options: { A: string; B: string; C: string; D: string;_id: string }
+    }
+    description: string
+    difficulty: string
+    type: string
+    questions_number: number
+    duration: number
+}
+
 // GET: getAll
 export const apiGetAllQuizzes = () => {
   return axiosClient.get<Quiz[]>("/api/quiz");
@@ -64,7 +80,7 @@ export const apiGetAllQuizzes = () => {
 
 // GET: getById
 export const apiGetQuizById = (id: string) => {
-  return axiosClient.get<Quiz>(`/api/quiz/${id}`);
+  return axiosClient.get<QuizDetails>(`/api/quiz/${id}`);
 };
 
 // POST: create
@@ -88,14 +104,14 @@ export const apiJoinQuiz = (data: JoinQuizData) => {
 };
 
 // POST: submit
-export const apiSubmitQuiz = (data: SubmitQuizData) => {
-  return axiosClient.post("/api/quiz/submit", data);
+export const apiSubmitQuiz = (quizId: string, data: SubmitQuizData) => {
+  return axiosClient.post(`/api/quiz/submit/${quizId}`, data);
 };
 
 // GET: questionsWithoutAnswers
-export const apiGetQuestionsWithoutAnswers = (quizId: string) => {
-  return axiosClient.get(`/api/quiz/questions-no-answers/${quizId}`);
-};
+
+export const apiGetQuestionsWithoutAnswers = (id: string) =>
+  axiosClient.get(`/api/quiz/without-answers/${id}`);   
 
 // GET: allResults
 export const apiGetAllQuizResults = () => {

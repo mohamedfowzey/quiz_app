@@ -12,33 +12,55 @@ import {
   apiGetCompletedQuizzes,
   Quiz,
   JoinQuizData,
+  apiJoinQuiz
 } from "@/app/api/quizApi/QuizApis";
 import { usePathname, useRouter } from "next/navigation";
 import OnlyInstructor from "@/app/(components)/main_components/OnlyInstructor/OnlyInstructor";
 import OnlyLearner from "@/app/(components)/main_components/OnlyLearner/OnlyLearner";
 import JoinQuizDialog from "./JoinModal";
+import { toast } from "sonner";
+import { set } from "zod";
+import axios from "axios";
+import { ViewQuizDialog } from "../../learner/quizzes/page";
+// import { ViewQuizDialog } from "../../learner/quizzes/page";
 
 export default function QuizzPage() {
   const params = usePathname()
   const role = params.split('/')[1];
-  console.log('role from learner dashboard: ',role);
-  
+  console.log('role from learner dashboard: ', role);
+
   const router = useRouter();
   const [upcomingQuizzes, setUpcomingQuizzes] = useState<Quiz[]>([]);
-  const [completedQuizzes, setCompletedQuizzes]   = useState<Quiz[]>([]);
+  const [completedQuizzes, setCompletedQuizzes] = useState<Quiz[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [loadingCode, setLoadingCode] = useState(false);
+  const [idQuiz, setIdQuiz] = useState("");
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
   const [createdQuizCode, setCreatedQuizCode] = useState<string>("");
 
-  const [joinModal,setJoinModal] = useState(false);
+  const [joinModal, setJoinModal] = useState(false);
+  const [joinQuizModal, setQuizModal] = useState(false);
 
   const onjionQuizz = useCallback(
-    (data : JoinQuizData)=>{
-      console.log(data);
-      
-    },[]
+    async (data: JoinQuizData) => {
+      setLoadingCode(true);
+      try {
+        const response = await apiJoinQuiz(data as string & JoinQuizData);
+        toast.success(response?.data?.message);
+        setIdQuiz(response?.data?.data?.quiz);
+        setQuizModal(true);
+        setJoinModal(false);
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          toast.error(error.response?.data?.message);
+        }
+      } finally {
+        setLoadingCode(false);
+      }
+
+    }, []
   )
 
   const fetchQuizzes = async () => {
@@ -60,7 +82,7 @@ export default function QuizzPage() {
   };
 
   useEffect(() => {
-    (()=>{
+    (() => {
 
       fetchQuizzes();
     })()
@@ -89,45 +111,45 @@ export default function QuizzPage() {
         <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-row gap-7">
           <OnlyInstructor>
 
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="w-full h-[150px] bg-white border border-gray-200 rounded-2xl flex flex-col items-center justify-center gap-2 hover:shadow-md transition-all cursor-pointer group text-center"
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="w-full h-[150px] bg-white border border-gray-200 rounded-2xl flex flex-col items-center justify-center gap-2 hover:shadow-md transition-all cursor-pointer group text-center"
             >
-            <div className="group-hover:scale-105 transition-transform">
-              <Image src={alarm} alt="Alarm" width={60} height={60} />
-            </div>
-            <span className="font-bold sm:text-[14px] text-slate-800 leading-tight">
-              Set up a new quiz
-            </span>
-          </button>
+              <div className="group-hover:scale-105 transition-transform">
+                <Image src={alarm} alt="Alarm" width={60} height={60} />
+              </div>
+              <span className="font-bold sm:text-[14px] text-slate-800 leading-tight">
+                Set up a new quiz
+              </span>
+            </button>
 
-          <button
-            onClick={() => {
-              router.push("/instructor/questions");
-            }}
-            className="w-full h-[150px] bg-white border border-gray-200 rounded-2xl flex flex-col items-center justify-center gap-2 hover:shadow-md transition-all cursor-pointer group text-center"
-          >
-            <div className="group-hover:scale-105 transition-transform">
-              <Image src={question} alt="question" width={60} height={60} />
-            </div>
-            <span className="font-bold sm:text-[14px] text-slate-800 leading-tight">
-              Question Bank
-            </span>
-          </button>
-            </OnlyInstructor>
-            <OnlyLearner>
-              <button
-            onClick={() => setJoinModal(true)}
-            className="w-full h-[150px] bg-white border border-gray-200 rounded-2xl flex flex-col items-center justify-center gap-2 hover:shadow-md transition-all cursor-pointer group text-center"
+            <button
+              onClick={() => {
+                router.push("/instructor/questions");
+              }}
+              className="w-full h-[150px] bg-white border border-gray-200 rounded-2xl flex flex-col items-center justify-center gap-2 hover:shadow-md transition-all cursor-pointer group text-center"
             >
-            <div className="group-hover:scale-105 transition-transform">
-              <Image src={alarm} alt="Alarm" width={60} height={60} />
-            </div>
-            <span className="font-bold sm:text-[14px] text-slate-800 leading-tight">
-              join quiz
-            </span>
-          </button>
-            </OnlyLearner>
+              <div className="group-hover:scale-105 transition-transform">
+                <Image src={question} alt="question" width={60} height={60} />
+              </div>
+              <span className="font-bold sm:text-[14px] text-slate-800 leading-tight">
+                Question Bank
+              </span>
+            </button>
+          </OnlyInstructor>
+          <OnlyLearner>
+            <button
+              onClick={() => setJoinModal(true)}
+              className="w-full h-[150px] bg-white border border-gray-200 rounded-2xl flex flex-col items-center justify-center gap-2 hover:shadow-md transition-all cursor-pointer group text-center"
+            >
+              <div className="group-hover:scale-105 transition-transform">
+                <Image src={alarm} alt="Alarm" width={60} height={60} />
+              </div>
+              <span className="font-bold sm:text-[14px] text-slate-800 leading-tight">
+                join quiz
+              </span>
+            </button>
+          </OnlyLearner>
         </div>
 
         <div className="lg:col-span-8 flex flex-col gap-8">
@@ -272,23 +294,28 @@ export default function QuizzPage() {
           </div>
         </div>
       </div>
-<OnlyInstructor>
+      <OnlyInstructor>
 
-      <CreateQuizModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSuccess={handleQuizCreateSuccess}
-      />
+        <CreateQuizModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSuccess={handleQuizCreateSuccess}
+        />
 
-      <QuizSuccessModal
-        isOpen={isSuccessModalOpen}
-        onClose={() => setIsSuccessModalOpen(false)}
-        quizCode={createdQuizCode}
-      />
-        </OnlyInstructor>
-        <OnlyLearner>
-          <JoinQuizDialog isOpen={joinModal} onCancel={()=>setJoinModal(false) } onJoin={onjionQuizz}/>
-        </OnlyLearner>
+        <QuizSuccessModal
+          isOpen={isSuccessModalOpen}
+          onClose={() => setIsSuccessModalOpen(false)}
+          quizCode={createdQuizCode}
+        />
+      </OnlyInstructor>
+      <OnlyLearner>
+        <JoinQuizDialog isOpen={joinModal} loading={loadingCode} onCancel={() => setJoinModal(false)} onJoin={onjionQuizz} />
+        <ViewQuizDialog open={joinQuizModal}
+          loading={loadingCode}
+          idQuiz={idQuiz}
+          onClose={() => setQuizModal(false)} />
+
+      </OnlyLearner>
     </div>
   );
 }
