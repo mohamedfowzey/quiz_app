@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Check, X } from "lucide-react";
+import { Check, Loader2Icon, X } from "lucide-react";
 import { JoinQuizData } from "@/app/api/quizApi/QuizApis";
 
 
@@ -11,9 +11,10 @@ interface JoinQuizDialogProps {
   isOpen: boolean;
   onJoin?: (data : JoinQuizData) => void;
   onCancel?: () => void;
+  loading?: boolean;
 }
 
-export default function JoinQuizDialog({ isOpen, onJoin, onCancel }: JoinQuizDialogProps) {
+export default function JoinQuizDialog({ isOpen, onJoin, onCancel, loading }: JoinQuizDialogProps) {
   // Initialize react-hook-form with onChange mode
   const {
     register,
@@ -96,7 +97,15 @@ export default function JoinQuizDialog({ isOpen, onJoin, onCancel }: JoinQuizDia
               }`}
               aria-label="Confirm"
             >
+              {loading ? (
+              <>
+                <Loader2Icon size={20} className="animate-spin mx-1" />
+              Joining...
+              </>
+            ) : (
               <Check className="h-7 w-7 text-black stroke-[3.5]" />
+            )}
+              
             </button>
             
             {/* Cancel Button */}

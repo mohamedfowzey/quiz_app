@@ -20,12 +20,12 @@ export function AlertDialogDestructive({
   onOpenChange,
   loading = false,
 }: {
-  title: string
-  tDescription: string
-  onDelete: () => void
-  open: boolean
-  onOpenChange: () => void
-  loading?: boolean
+  title: string;
+  tDescription: string;
+  onDelete: () => void;
+  open: boolean;
+  onOpenChange: () => void;
+  loading?: boolean;
 }) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -54,7 +54,7 @@ export function AlertDialogDestructive({
             {loading ? (
               <>
                 <Loader2Icon className="animate-spin" />
-                {title === 'logout' ? 'logingout...' : 'Deleting...'}
+                {title === 'logout' ? 'loggingout...' : 'Deleting...'}
               </>
             ) : (
               

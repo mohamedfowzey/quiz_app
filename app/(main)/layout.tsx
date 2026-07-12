@@ -10,9 +10,12 @@ export default function Main({ children }: { children: ReactNode }) {
         <div className="flex w-full">
           <AppSidebar />
 
-          <div className="grow  ">
+          <div className="grow w-lg  ">
               <Navbar />
+              <div className="container ">
+
             {children}
+              </div>
           </div>
         </div>
       </SidebarProvider>
