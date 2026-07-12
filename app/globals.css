@@ -168,3 +168,29 @@ input:-webkit-autofill:active {
   display: block !important;
   width: 100% !important;
 } */
+
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f3f4f6; /* gray-100 */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #10b981; /* emerald-500 */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #059669; /* emerald-600 */
+}
+
+/* Firefox */
+.custom-scrollbar {
+  scrollbar-width:thin;
+  scrollbar-color: #10b981 #f3f4f6;
+}
