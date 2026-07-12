@@ -30,7 +30,7 @@ interface QuizDetails {
     group: string
     questions_number: number
     duration?: number
-    score_per_question?: number   
+    score_per_question?: number
     questions: QuizQuestion[]
 }
 
@@ -152,7 +152,7 @@ export function ViewQuizDialog({ open, loading, idQuiz, onClose }: ViewQuizDialo
             <DialogContent
                 onInteractOutside={(e) => e.preventDefault()}
                 onEscapeKeyDown={(e) => e.preventDefault()}
-                className="sm:max-w-3xl w-[95%] p-6 max-h-[85vh] overflow-y-auto [&>button]:hidden"
+                className="sm:max-w-3xl w-[95%] p-0 max-h-[85vh] overflow-hidden [&>button]:hidden flex flex-col"
             >
                 {(loading || fetching) ? (
                     <div className="flex items-center justify-center py-10">
@@ -160,90 +160,95 @@ export function ViewQuizDialog({ open, loading, idQuiz, onClose }: ViewQuizDialo
                     </div>
                 ) : quiz ? (
                     <>
-                        <DialogHeader>
-                            <div className="flex items-center justify-between gap-3">
-                                <DialogTitle className="text-lg font-bold text-slate-900">
-                                    {quiz.title}
-                                </DialogTitle>
-                                {timeLeft !== null && (
-                                    <div
-                                        className={`flex items-center gap-1.5 text-sm font-bold px-3 py-1 rounded-full shrink-0 transition-colors ${timeLeft <= 30
-                                            ? "bg-red-50 text-red-600 animate-pulse"
-                                            : "bg-emerald-50 text-emerald-700"
-                                            }`}
-                                    >
-                                        <Clock className="w-3.5 h-3.5" />
-                                        {formatTime(timeLeft)}
-                                    </div>
-                                )}
-                            </div>
-                        </DialogHeader>
-
-                        {quiz.description && (
-                            <p className="text-sm text-gray-500 mb-1">{quiz.description}</p>
-                        )}
-
-                        {/* Progress bar */}
-                        <div className="mb-2 mt-2">
-                            <div className="w-full bg-gray-100 rounded-full h-1.5">
-                                <div
-                                    className="bg-emerald-600 h-1.5 rounded-full transition-all duration-300 ease-out"
-                                    style={{ width: `${progress}%` }}
-                                />
-                            </div>
-                            <p className="text-xs text-gray-400 mt-1.5">
-                                {answeredCount} from {quiz.questions.length} answered
-                            </p>
-                        </div>
-
-                        <div className="flex flex-col gap-4 mt-3">
-                            {quiz.questions?.map((q, index) => (
-                                <div
-                                    key={q._id}
-                                    className="border border-gray-100 rounded-xl p-4 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
-                                    style={{ animationDelay: `${index * 60}ms` }}
-                                >
-                                    <div className="flex items-center gap-2 mb-3">
-                                        <span
-                                            className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold shrink-0 transition-colors ${answers[q._id]
-                                                ? "bg-emerald-500 text-white"
-                                                : "bg-emerald-100 text-emerald-700"
+                        {/* Sticky top section: header + progress bar */}
+                        <div className="sticky top-0 z-20 bg-white px-6 pt-6 pb-2 border-b border-gray-100">
+                            <DialogHeader className="w-full">
+                                <div className="flex items-center justify-between gap-3">
+                                    <DialogTitle className="text-lg font-bold text-slate-900">
+                                        {quiz.title}
+                                    </DialogTitle>
+                                    {timeLeft !== null && (
+                                        <div
+                                            className={`flex items-center gap-1.5 text-sm font-bold px-3 py-1 rounded-full shrink-0 transition-colors ${timeLeft <= 30
+                                                ? "bg-red-50 text-red-600 animate-pulse"
+                                                : "bg-emerald-50 text-emerald-700"
                                                 }`}
                                         >
-                                            {index + 1}
-                                        </span>
-                                        <p className="font-semibold text-sm text-slate-900">
-                                            {q.title}
-                                        </p>
-                                    </div>
+                                            <Clock className="w-3.5 h-3.5" />
+                                            {formatTime(timeLeft)}
+                                        </div>
+                                    )}
+                                </div>
+                            </DialogHeader>
 
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                        {(["A", "B", "C", "D"] as const).map((key) => (
-                                            <label
-                                                key={key}
-                                                className={`relative flex items-center gap-2 border-2 rounded-lg px-3 py-2.5 text-sm cursor-pointer transition-all duration-150 ${answers[q._id] === key
-                                                    ? "border-emerald-500 bg-emerald-50 shadow-sm"
-                                                    : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                            {quiz.description && (
+                                <p className="text-sm text-gray-500 mb-1">{quiz.description}</p>
+                            )}
+
+                            {/* Progress bar */}
+                            <div className="mb-1 mt-2">
+                                <div className="w-full bg-gray-100 rounded-full h-1.5">
+                                    <div
+                                        className="bg-emerald-600 h-1.5 rounded-full transition-all duration-300 ease-out"
+                                        style={{ width: `${progress}%` }}
+                                    />
+                                </div>
+                                <p className="text-xs text-gray-400 mt-1.5">
+                                    {answeredCount} from {quiz.questions.length} answered
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Scrollable questions area only */}
+                        <div className="flex-1 overflow-y-auto px-6 custom-scrollbar">
+                            <div className="flex flex-col gap-4 mt-3 pb-4">
+                                {quiz.questions?.map((q, index) => (
+                                    <div
+                                        key={q._id}
+                                        className="border border-gray-100 rounded-xl p-4 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
+                                        style={{ animationDelay: `${index * 60}ms` }}
+                                    >
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <span
+                                                className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold shrink-0 transition-colors ${answers[q._id]
+                                                    ? "bg-emerald-500 text-white"
+                                                    : "bg-emerald-100 text-emerald-700"
                                                     }`}
                                             >
-                                                <input
-                                                    type="radio"
-                                                    name={q._id}
-                                                    checked={answers[q._id] === key}
-                                                    onChange={() => handleSelectAnswer(q._id, key)}
-                                                    className="accent-emerald-600 w-4 h-4 transition-transform duration-150"
-                                                />
-                                                <span className={answers[q._id] === key ? "font-medium text-emerald-800" : "text-slate-700"}>
-                                                    {q.options[key]}
-                                                </span>
-                                            </label>
-                                        ))}
+                                                {index + 1}
+                                            </span>
+                                            <p className="font-semibold text-sm text-slate-900">
+                                                {q.title}
+                                            </p>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                            {(["A", "B", "C", "D"] as const).map((key) => (
+                                                <label
+                                                    key={key}
+                                                    className={`relative flex items-center gap-2 border-2 rounded-lg px-3 py-2.5 text-sm cursor-pointer transition-all duration-150 ${answers[q._id] === key
+                                                        ? "border-emerald-500 bg-emerald-50 shadow-sm"
+                                                        : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                                                        }`}
+                                                >
+                                                    <input
+                                                        type="radio"
+                                                        name={q._id}
+                                                        checked={answers[q._id] === key}
+                                                        onChange={() => handleSelectAnswer(q._id, key)}
+                                                        className="accent-emerald-600 w-4 h-4 transition-transform duration-150"
+                                                    />
+                                                    <span className={answers[q._id] === key ? "font-medium text-emerald-800" : "text-slate-700"}>
+                                                        {q.options[key]}
+                                                    </span>
+                                                </label>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
-                        {/* Sticky footer */}
-                        <div className=" bottom-0 bg-white pt-4 -mx-6 px-6 border-t border-gray-100 mt-4">
+                        <div className="bg-white pt-4 pb-6 px-10 border-t-3 border-gray-100">
                             <button
                                 onClick={handleSubmit}
                                 disabled={submitting}
@@ -254,6 +259,7 @@ export function ViewQuizDialog({ open, loading, idQuiz, onClose }: ViewQuizDialo
                             </button>
                         </div>
 
+                        {/* Fixed footer, outside the scroll container */}
                     </>
                 ) : (
                     <div className="text-center py-10 text-gray-400">
