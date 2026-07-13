@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, Suspense } from "react";
 import {
   getGroups,
   deleteGroup,
@@ -18,9 +18,10 @@ interface Group {
 }
 
 export default function Groups() {
+  const [loading,setLoading] = useState(false)
   const [allGroups, setAllGroups] = useState<Group[]>([]);
   const [page, setPage] = useState(1);
-  const limit = 10;
+  const limit = 5;
 
   const [showModal, setShowModal] = useState(false);
   const [editingGroup, setEditingGroup] = useState<Group | null>(null);
@@ -54,7 +55,7 @@ export default function Groups() {
 
   useEffect(() => {
     const fetchAll = async () => {
-      const data = await getGroups(1, 100);
+      const data = await getGroups(page, limit);
       setAllGroups(Array.isArray(data) ? data : []);
     };
     fetchAll();
@@ -123,6 +124,8 @@ export default function Groups() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+        <Suspense fallback={<p>loading...</p>}>
+          <>
         {paginatedGroups.map((group) => (
           <GroupCard
             key={group._id}
@@ -135,6 +138,8 @@ export default function Groups() {
             }}
           />
         ))}
+        </>
+        </Suspense>
       </div>
 
       {/* Pagination UI */}

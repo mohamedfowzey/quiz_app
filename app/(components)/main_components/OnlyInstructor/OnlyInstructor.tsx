@@ -8,7 +8,6 @@ export default  function OnlyInstructor({children}:{children:ReactNode}) {
     const userToken = Cookies.get('auth_token');
     if(!!userToken){
         const decoded:profile | undefined = jwtDecode(userToken);
-        console.log(decoded);
         const role = decoded?.role
         if(role === 'Instructor'){
             return children

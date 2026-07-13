@@ -3,6 +3,8 @@ import quizLogo from "@/public/images/Quiz icon.svg"; // Import the quiz logo im
 import { API_BASE_URL } from "@/app/api/AxiosClient";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { Suspense } from "react";
+import { Spinner } from "@/components/ui/spinner";
 export interface Quiz {
   _id: string;
   code: string;
@@ -67,6 +69,9 @@ const UpcomingQuizzes = async () => {
 
       {/* List of quiz items */}
       <div className="space-y-4">
+        <Suspense fallback={<Spinner/>}>
+
+        
         {quizData.map((quiz) => (
           // Individual quiz list item card
           <div
@@ -133,6 +138,7 @@ const UpcomingQuizzes = async () => {
             </div>
           </div>
         ))}
+        </Suspense>
       </div>
     </div>
   );
