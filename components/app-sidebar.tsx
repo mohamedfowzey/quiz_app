@@ -101,7 +101,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   height={40}
                   className="bg-light p-0.5"
                 />
-                <span>Groups</span>
+                <>Groups</>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

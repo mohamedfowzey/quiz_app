@@ -32,11 +32,17 @@ const UpcomingQuizzes = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get("auth_token")?.value || "";
   // Get the auth token from cookies
-  const quizData: Quiz[] = await fetch(`${API_BASE_URL}/api/quiz/incomming`, {
+  let quizData: Quiz[] | undefined;
+  try{
+  quizData = await fetch(`${API_BASE_URL}/api/quiz/incomming`, {
     headers: {
       Authorization: `Bearer ${token}`, // Use the auth token from cookies
     },
-  }).then((res) => res.json()); // Fetch the upcoming quizzes data
+  }).then((res) => res.json());
+}
+  catch(error){
+    console.log(error)
+  } 
   return (
     // Outer card container with shadows and rounded corners
     <div className="bg-white p-6 rounded-3xl shadow-lg w-full max-w-xl mx-auto border border-neutral-100">
@@ -72,7 +78,7 @@ const UpcomingQuizzes = async () => {
         <Suspense fallback={<Spinner/>}>
 
         
-        {quizData.map((quiz) => (
+        {quizData?.map((quiz) => (
           // Individual quiz list item card
           <div
             key={quiz._id}
