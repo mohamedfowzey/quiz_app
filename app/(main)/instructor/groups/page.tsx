@@ -120,11 +120,11 @@ export default function Groups() {
 
             
             }}>
-              <option value={':'} disabled>students</option>
+              <option value={':'} disabled selected>students</option>
            {allSudents?.map((st,i)=>st?.group ? <></> : <option key={i} value={`${st.first_name} ${st.last_name}:${st._id}`}>{st?.first_name + ' ' + st?.last_name}</option>)}
            </select >
            <div className="flex flex-col max-h-40 overflow-y-auto">
-            {students.entries().map((s,i)=><p className="px-4 py-2 m-2 border border-dark rounded-xl relative"  key={i}>{s[1]} <span className="absolute right-0 px-4 py-2 text-red-700 top-0 rounded-r-xl cursor-pointer hover:bg-red-100" onClick={()=>{students.delete(s[0]);setStudents(students)}}>x</span></p>)}
+            {[...students.entries()].map((s,i)=><p className="px-4 py-2 m-2 border border-dark rounded-xl relative"  key={i}>{s[1]} <span className="absolute right-0 px-4 py-2 text-red-700 top-0 rounded-r-xl cursor-pointer hover:bg-red-100" onClick={()=>{students.delete(s[0]);setStudents(students)}}>x</span></p>)}
            </div>
             <div className="flex justify-end gap-3">
               <button
