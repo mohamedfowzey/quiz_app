@@ -35,15 +35,12 @@ export default  function Navbar() {
   let userData: profile | undefined ;
   try{
 
-    userData = jwtDecode(token || "");
+    userData= jwtDecode(token || "");
   }
-  catch{
-    console.log('error');
-    
-  }
+  catch{userData=undefined  }
     const router = useRouter();
 
-   const logout = () => { 
+   const logout = () => {   
     
     Cookies.remove("auth_token");
 

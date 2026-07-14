@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, Suspense } from "react";
 import {
   getGroups,
   deleteGroup,
@@ -10,6 +10,8 @@ import {
 import { Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import GroupCard from "./components/GroupCard";
 import { toast } from "sonner";
+import { Select } from "@/components/ui/select";
+import axiosClient from "@/app/api/AxiosClient";
 
 interface Group {
   _id: string;
@@ -18,13 +20,16 @@ interface Group {
 }
 
 export default function Groups() {
+  const [loading,setLoading] = useState(false)
   const [allGroups, setAllGroups] = useState<Group[]>([]);
+  const [allSudents,setAllStudents] = useState<any>()
   const [page, setPage] = useState(1);
-  const limit = 10;
+  const limit = 5;
 
   const [showModal, setShowModal] = useState(false);
   const [editingGroup, setEditingGroup] = useState<Group | null>(null);
   const [groupName, setGroupName] = useState("");
+  const [students,setStudents] = useState<Map<string,string>>(new Map());
 
   const handleSave = async () => {
     try {
@@ -54,8 +59,12 @@ export default function Groups() {
 
   useEffect(() => {
     const fetchAll = async () => {
-      const data = await getGroups(1, 100);
+      const data = await getGroups(page, limit);
       setAllGroups(Array.isArray(data) ? data : []);
+      const StudentsList = await axiosClient.get('/api/student')
+      console.log(StudentsList.data);
+      
+      setAllStudents(StudentsList.data)
     };
     fetchAll();
   }, []);
@@ -103,9 +112,23 @@ export default function Groups() {
               className="w-full p-3 border rounded-xl mb-4"
               placeholder="Group name"
             />
+           <select  onChange={(e)=>{
+            const [key,value] = e.target.value.split(':')
+            students.set(key,value)
+            setStudents(students);
+            console.log(students);
+
+            
+            }}>
+              <option value={':'} disabled selected>students</option>
+           {allSudents?.map((st,i)=>st?.group ? <></> : <option key={i} value={`${st.first_name} ${st.last_name}:${st._id}`}>{st?.first_name + ' ' + st?.last_name}</option>)}
+           </select >
+           <div className="flex flex-col max-h-40 overflow-y-auto">
+            {[...students.entries()].map((s,i)=><p className="px-4 py-2 m-2 border border-dark rounded-xl relative"  key={i}>{s[1]} <span className="absolute right-0 px-4 py-2 text-red-700 top-0 rounded-r-xl cursor-pointer hover:bg-red-100" onClick={()=>{students.delete(s[0]);setStudents(students)}}>x</span></p>)}
+           </div>
             <div className="flex justify-end gap-3">
               <button
-                onClick={() => setShowModal(false)}
+                onClick={() => {setShowModal(false);setStudents(new Map())}}
                 className="px-4 py-2 rounded-xl border"
               >
                 Cancel
@@ -123,6 +146,8 @@ export default function Groups() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+        <Suspense fallback={<p>loading...</p>}>
+          <>
         {paginatedGroups.map((group) => (
           <GroupCard
             key={group._id}
@@ -135,6 +160,8 @@ export default function Groups() {
             }}
           />
         ))}
+        </>
+        </Suspense>
       </div>
 
       {/* Pagination UI */}

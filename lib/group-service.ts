@@ -14,8 +14,14 @@ const getAuthHeaders = async () => {
 
 export const getGroups = async (page: number = 1, limit: number = 10) => {
     const config = await getAuthHeaders();
-    const response = await axios.get(`${API_URL}?page=${page}&limit=${limit}`, config);
-    return response.data;
+    let response;
+    try{
+
+         response = await axios.get(`${API_URL}?page=${page}&limit=${limit}`, config);
+    }
+    catch(e){console.log(e);
+    }
+    return response?.data;
 };
 
 export const deleteGroup = async (id: string) => {
