@@ -34,7 +34,7 @@ const UpcomingQuizzes = async () => {
     headers: {
       Authorization: `Bearer ${token}`, // Use the auth token from cookies
     },
-  }).then((res) => res.json()); // Fetch the upcoming quizzes data
+  }).then((res) => res.json()).catch(e=>console.log(e)) // Fetch the upcoming quizzes data
   return (
     // Outer card container with shadows and rounded corners
     <div className="bg-white p-6 rounded-3xl shadow-lg w-full max-w-xl mx-auto border border-neutral-100">

@@ -2,7 +2,7 @@ import { API_BASE_URL } from '@/app/api/AxiosClient';
 import { Student } from '@/app/types/Student';
 import {  cookies } from 'next/headers';
 import Image from 'next/image';
-import avatar from '@/public/images/avatar.avif';
+import avatar from '@/public/images/avatar.jpg';
 import { toast } from 'sonner';
 
 
