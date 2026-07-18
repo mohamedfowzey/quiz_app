@@ -41,7 +41,7 @@ interface ViewQuizDialogProps {
     onClose?: () => void
 }
 
-export function ViewQuizDialog({ open, loading, idQuiz, onClose }: ViewQuizDialogProps) {
+export default function ViewQuizDialog({ open, loading, idQuiz, onClose }: ViewQuizDialogProps) {
     const [quiz, setQuiz] = useState<QuizDetails | null>(null)
     const [fetching, setFetching] = useState(false)
     const [submitting, setSubmitting] = useState(false)
