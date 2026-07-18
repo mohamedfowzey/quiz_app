@@ -28,7 +28,7 @@ export default function QuizzesPage() {
         if (response && response.data) {
           const fetchedData = Array.isArray(response.data)
             ? response.data
-            : response.data.data || [];
+            : response?.data?.data || [];
           setQuizzes(fetchedData);
         }
       } catch (error) {
