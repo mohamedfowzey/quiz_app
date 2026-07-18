@@ -19,9 +19,8 @@ import OnlyInstructor from "@/app/(components)/main_components/OnlyInstructor/On
 import OnlyLearner from "@/app/(components)/main_components/OnlyLearner/OnlyLearner";
 import JoinQuizDialog from "./JoinModal";
 import { toast } from "sonner";
-import { set } from "zod";
 import axios from "axios";
-import { ViewQuizDialog } from "../../learner/quizzes/page";
+import  ViewQuizDialog  from "../../learner/quizzes/page";
 // import { ViewQuizDialog } from "../../learner/quizzes/page";
 
 export default function QuizzPage() {
