@@ -17,7 +17,7 @@ export default function QuizDetailsPage() {
       try {
         setLoading(true);
         const response = await apiGetQuizById(id as string);
-        setQuiz(response.data);
+        setQuiz(response?.data);
       } catch (error) {
         console.error("Error fetching quiz details:", error);
       } finally {
