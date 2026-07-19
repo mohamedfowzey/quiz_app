@@ -100,11 +100,12 @@ export function ViewQuizDialog({ open, loading, idQuiz, onClose }: ViewQuizDialo
     const handleSubmit = async () => {
         if (!quiz) return
 
-        const unanswered = quiz.questions.filter((q) => !answers[q._id])
-        if (unanswered.length > 0 && timeLeft !== 0) {
-            toast.error("Please answer all questions before submitting")
-            return
-        }
+        // const unanswered = quiz.questions.filter((q) => !answers[q._id]);
+
+        // if (unanswered.length > 0 && timeLeft !== 0) {
+        //     toast.error("Please answer all questions before submitting")
+        //     return
+        // }
 
         const payload: SubmitQuizData = {
             answers: quiz.questions

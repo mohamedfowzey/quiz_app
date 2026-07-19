@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { set } from "zod";
 import axios from "axios";
 import { ViewQuizDialog } from "../../learner/quizzes/page";
+import ExamWarningModal from "../../learner/quizzes/ExamWarningModal";
 // import { ViewQuizDialog } from "../../learner/quizzes/page";
 
 export default function QuizzPage() {
@@ -36,6 +37,7 @@ export default function QuizzPage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [loadingCode, setLoadingCode] = useState(false);
   const [idQuiz, setIdQuiz] = useState("");
+  const [examWarningModal, setExamWarningModal] = useState(false);
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
   const [createdQuizCode, setCreatedQuizCode] = useState<string>("");
@@ -113,6 +115,7 @@ export default function QuizzPage() {
 
             <button
               onClick={() => setIsModalOpen(true)}
+
               className="w-full h-[150px] bg-white border border-gray-200 rounded-2xl flex flex-col items-center justify-center gap-2 hover:shadow-md transition-all cursor-pointer group text-center"
             >
               <div className="group-hover:scale-105 transition-transform">
@@ -139,7 +142,7 @@ export default function QuizzPage() {
           </OnlyInstructor>
           <OnlyLearner>
             <button
-              onClick={() => setJoinModal(true)}
+              onClick={() => setExamWarningModal(true)}
               className="w-full h-[150px] bg-white border border-gray-200 rounded-2xl flex flex-col items-center justify-center gap-2 hover:shadow-md transition-all cursor-pointer group text-center"
             >
               <div className="group-hover:scale-105 transition-transform">
@@ -309,12 +312,27 @@ export default function QuizzPage() {
         />
       </OnlyInstructor>
       <OnlyLearner>
-        <JoinQuizDialog isOpen={joinModal} loading={loadingCode} onCancel={() => setJoinModal(false)} onJoin={onjionQuizz} />
-        <ViewQuizDialog open={joinQuizModal}
+        <ExamWarningModal
+          isOpen={examWarningModal}
+          onConfirm={() => {
+            setExamWarningModal(false);
+            setJoinModal(true);
+          }}
+          onCancel={() => setExamWarningModal(false)}
+        />
+
+        <JoinQuizDialog
+          isOpen={joinModal}
+          loading={loadingCode}
+          onCancel={() => setJoinModal(false)}
+          onJoin={onjionQuizz}
+        />
+        <ViewQuizDialog
+          open={joinQuizModal}
           loading={loadingCode}
           idQuiz={idQuiz}
-          onClose={() => setQuizModal(false)} />
-
+          onClose={() => setQuizModal(false)}
+        />
       </OnlyLearner>
     </div>
   );
