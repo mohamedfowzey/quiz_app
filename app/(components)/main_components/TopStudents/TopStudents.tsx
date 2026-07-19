@@ -69,12 +69,12 @@ export default async function TopStudents() {
                 <h3 className="text-sm font-bold text-gray-800 truncate leading-snug">
                   {student.first_name} {student.last_name}
                 </h3>
-                <p className="text-xs font-medium text-gray-400 mt-0.5">
-                  Status : <span className="text-gray-600 font-semibold">{student.status}</span>
+                <p className="text-sm font-medium text-gray-400 mt-0.5">
+                  Status : <span className={`${student.status === 'active' ? 'text-green-500' : 'text-red-500'}`}>{student.status}</span>
                 </p>
-                <p className="text-xs font-medium text-gray-400 mt-0.5">
+                <p className="text-sm font-medium text-gray-400 mt-0.5">
 
-                  Email: <span className="text-gray-600 font-semibold">{student.email}</span>
+                  Email: <span className="text-blue-900 font-semibold">{student.email}</span>
                 </p>
               </div>
 
