@@ -2,12 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Calendar, Clock, ArrowLeft } from "lucide-react";
-import { apiGetQuizById, Quiz } from "@/app/api/quizApi/QuizApis";
+import { apiGetQuizById,  QuizDetails } from "@/app/api/quizApi/QuizApis";
 
 export default function QuizDetailsPage() {
   const { id } = useParams();
   const router = useRouter();
-  const [quiz, setQuiz] = useState<Quiz | null>(null);
+  const [quiz, setQuiz] = useState<QuizDetails | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export default function QuizDetailsPage() {
       try {
         setLoading(true);
         const response = await apiGetQuizById(id as string);
-        setQuiz(response.data);
+        setQuiz(response?.data);
       } catch (error) {
         console.error("Error fetching quiz details:", error);
       } finally {

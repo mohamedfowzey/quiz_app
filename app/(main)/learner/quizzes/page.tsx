@@ -12,6 +12,7 @@ import { useEffect, useState, useRef } from "react"
 import { toast } from "sonner"
 import axios from "axios"
 import { QuizResultModal } from "./QuizResultModal"
+import { useIsTabActive } from "@/app/hooks/useIsTabActive"
 
 
 interface QuizQuestion {
@@ -41,7 +42,7 @@ interface ViewQuizDialogProps {
     onClose?: () => void
 }
 
-export function ViewQuizDialog({ open, loading, idQuiz, onClose }: ViewQuizDialogProps) {
+export default function ViewQuizDialog({ open, loading, idQuiz, onClose }: ViewQuizDialogProps) {
     const [quiz, setQuiz] = useState<QuizDetails | null>(null)
     const [fetching, setFetching] = useState(false)
     const [submitting, setSubmitting] = useState(false)
@@ -51,6 +52,7 @@ export function ViewQuizDialog({ open, loading, idQuiz, onClose }: ViewQuizDialo
 
     const [showResult, setShowResult] = useState(false)
     const [resultData, setResultData] = useState<{ score?: number; total?: number }>({})
+    const isTabActive = useIsTabActive()
 
     useEffect(() => {
         if (open && idQuiz) {
@@ -146,6 +148,13 @@ export function ViewQuizDialog({ open, loading, idQuiz, onClose }: ViewQuizDialo
         const s = seconds % 60
         return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`
     }
+
+    useEffect(()=>{
+        if(!isTabActive){
+
+            handleSubmit();
+        }
+    },[isTabActive])
 
     return (<>
 

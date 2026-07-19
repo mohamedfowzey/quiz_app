@@ -14,8 +14,13 @@ const getAuthHeaders = async () => {
 
 export const getGroups = async (page: number = 1, limit: number = 10) => {
     const config = await getAuthHeaders();
-    const response = await axios.get(`${API_URL}?page=${page}&limit=${limit}`, config);
-    return response.data;
+    let response;
+    try {
+        response = await axios.get(`${API_URL}?page=${page}&limit=${limit}`, config);
+    } catch (e) {
+        console.error("Error fetching groups:", e);
+    }
+    return response?.data;
 };
 
 export const deleteGroup = async (id: string) => {
@@ -24,14 +29,24 @@ export const deleteGroup = async (id: string) => {
     revalidatePath("/instructor/groups");
 };
 
-export const createGroup = async (name: string) => {
+export const createGroup = async (name: string, students: string[] = []) => {
     const config = await getAuthHeaders();
-    await axios.post(API_URL, { name }, config);
-    revalidatePath("/instructor/groups");
+    try {
+        await axios.post(API_URL, { name, students }, config);
+        revalidatePath("/instructor/groups");
+    } catch (error: any) {
+        console.error("Create Group Error Details:", error?.response?.data || error.message);
+        throw error;
+    }
 };
 
-export const updateGroup = async (id: string, name: string) => {
+export const updateGroup = async (id: string, name: string, students: string[] = []) => {
     const config = await getAuthHeaders();
-    await axios.put(`${API_URL}/${id}`, { name }, config);
-    revalidatePath("/instructor/groups");
+    try {
+        await axios.put(`${API_URL}/${id}`, { name, students }, config);
+        revalidatePath("/instructor/groups");
+    } catch (error: any) {
+        console.error("Update Group Error Details:", error?.response?.data || error.message);
+        throw error;
+    }
 };

@@ -61,74 +61,74 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          <SidebarMenuItem className="group-data-[state=collapsed]:mb-8 flex items-center justify-center">
-            <SidebarMenuButton
-              size={"lg"}
-              asChild
-              className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === "quizzes" && "border-r-8 border-dark group-data-[state=collapsed]:border-r group-data-[state=collapsed]:block"}`}
-            >
-              <Link
-                href={`/${role}/quizzes`}
-                className="flex items-center gap-3 border-r-0"
-              >
-                <Image
-                  src={quiz.src}
-                  alt="Logo"
-                  width={40}
-                  height={40}
-                  className="bg-light p-0.5"
-                />
-                <span>quizes</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
           <OnlyInstructor>
-
-          <SidebarMenuItem className="group-data-[state=collapsed]:mb-8 flex items-center justify-center">
-            <SidebarMenuButton
-              size={"lg"}
-              asChild
-              className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === "groups" && "border-r-8 border-dark group-data-[state=collapsed]:border-r group-data-[state=collapsed]:block"}`}
-            >
-              <Link
-                href={`/${role}/groups`}
-                className="flex items-center w-full! gap-3 border-r-0"
-                >
-                <Image
-                  src={group.src}
-                  alt="Logo"
-                  width={40}
-                  height={40}
-                  className="bg-light p-0.5"
-                />
-                <span>Groups</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-                  </OnlyInstructor>
-          <SidebarMenuItem className="group-data-[state=collapsed]:mb-8 flex items-center justify-center">
-            <SidebarMenuButton
-              size={"lg"}
-              asChild
-              className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === "results" && "border-r-8 border-dark group-data-[state=collapsed]:border-r group-data-[state=collapsed]:w-full! group-data-[state=collapsed]:block!"}`}
-            >
-              <Link
-                href={`/${role}/results`}
-                className="flex items-center gap-3 border-r-0"
+            <SidebarMenuItem className="group-data-[state=collapsed]:mb-8 flex items-center justify-center">
+              <SidebarMenuButton
+                size={"lg"}
+                asChild
+                className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === "quizzes" && "border-r-8 border-dark group-data-[state=collapsed]:border-r group-data-[state=collapsed]:block"}`}
               >
-                <Image
-                  src={result.src}
-                  alt="Logo"
-                  width={40}
-                  height={40}
-                  className="bg-light p-0.5"
-                />
-                <span>Results</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-         
-         
+                <Link
+                  href={`/${role}/quizzes`}
+                  className="flex items-center gap-3 border-r-0"
+                >
+                  <Image
+                    src={quiz.src}
+                    alt="Logo"
+                    width={40}
+                    height={40}
+                    className="bg-light p-0.5"
+                  />
+                  <span>quizes</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            <SidebarMenuItem className="group-data-[state=collapsed]:mb-8 flex items-center justify-center">
+              <SidebarMenuButton
+                size={"lg"}
+                asChild
+                className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === "groups" && "border-r-8 border-dark group-data-[state=collapsed]:border-r group-data-[state=collapsed]:block"}`}
+              >
+                <Link
+                  href={`/${role}/groups`}
+                  className="flex items-center w-full! gap-3 border-r-0"
+                >
+                  <Image
+                    src={group.src}
+                    alt="Logo"
+                    width={40}
+                    height={40}
+                    className="bg-light p-0.5"
+                  />
+                  <>Groups</>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem className="group-data-[state=collapsed]:mb-8 flex items-center justify-center">
+              <SidebarMenuButton
+                size={"lg"}
+                asChild
+                className={` py-12 pl-8 text-lg border-b border-gray-400 rounded-none  ${activeLink === "results" && "border-r-8 border-dark group-data-[state=collapsed]:border-r group-data-[state=collapsed]:w-full! group-data-[state=collapsed]:block!"}`}
+              >
+                <Link
+                  href={`/${role}/results`}
+                  className="flex items-center gap-3 border-r-0"
+                >
+                  <Image
+                    src={result.src}
+                    alt="Logo"
+                    width={40}
+                    height={40}
+                    className="bg-light p-0.5"
+                  />
+                  <span>Results</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </OnlyInstructor>
+
+
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>

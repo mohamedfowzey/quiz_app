@@ -14,10 +14,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { jwtDecode } from "jwt-decode";
 import { ChevronDown, LogOut } from "lucide-react";
-import  Cookies  from "js-cookie";
+import Cookies from "js-cookie";
 import { AlertDialogDestructive } from "../../dashboardShard/deleteConfirmation/DeleteConfirmation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import OnlyInstructor from "../OnlyInstructor/OnlyInstructor";
 
 export interface profile {
   email: string;
@@ -27,16 +28,21 @@ export interface profile {
   sub: string;
 }
 
-export default  function Navbar() {
-    const [logoutConfirm,setLogoutConfirm] = useState(false);
+export default function Navbar() {
+  const [logoutConfirm, setLogoutConfirm] = useState(false);
 
-  const token =  Cookies.get("auth_token");
+  const token = Cookies.get("auth_token");
 
-  const userData: profile | undefined = jwtDecode(token || "");
-    const router = useRouter();
+  let userData: profile | undefined;
+  try {
 
-   const logout = () => { 
-    
+    userData = jwtDecode(token || "");
+  }
+  catch { userData = undefined }
+  const router = useRouter();
+
+  const logout = () => {
+
     Cookies.remove("auth_token");
 
     router.push("/login");
@@ -53,15 +59,19 @@ export default  function Navbar() {
       </div>
 
       {/* Right Section: Button + User Info Dropdown */}
+
       <div className="flex items-center gap-6">
         {/* Pill-shaped Action Button */}
-        <Link
-          href="/instructor/quizzes"
-          className="flex items-center gap-2 px-4 py-1.5 border border-gray-300 rounded-full text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
-        >
-          <Image src={alarm.src} alt="add quiz" width={20} height={20} />
-          <span>New quiz</span>
-        </Link>
+        <OnlyInstructor>
+
+          <Link
+            href="/instructor/quizzes"
+            className="flex items-center gap-2 px-4 py-1.5 border border-gray-300 rounded-full text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
+          >
+            <Image src={alarm.src} alt="add quiz" width={20} height={20} />
+            <span>New quiz</span>
+          </Link>
+        </OnlyInstructor>
         {/* Vertical Divider */}
         <div className="h-8 w-px bg-gray-200" />
 
@@ -89,14 +99,14 @@ export default  function Navbar() {
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem onClick={()=>setLogoutConfirm(true)} className='hover:bg-red-600! hover:text-dark z-50 text-red-600'>
+                <DropdownMenuItem onClick={() => setLogoutConfirm(true)} className="bg-red-200 text-center hover:text-red-600! cursor-pointer hover:bg-red-200! px-2">
 
-   log out <LogOut />
-  </DropdownMenuItem>
+                  log out 
+                </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-  <AlertDialogDestructive  title="logout" tDescription="are ou sure you want to logout" onDelete={logout} onOpenChange={()=>setLogoutConfirm(false)} open={logoutConfirm}/>
+          <AlertDialogDestructive loading={false} title="logout" tDescription="are ou sure you want to logout" onDelete={logout} onOpenChange={() => setLogoutConfirm(false)} open={logoutConfirm} />
 
           {/* <svg 
             className="w-3 h-3 text-gray-400 group-hover:text-gray-600 transition-colors" 

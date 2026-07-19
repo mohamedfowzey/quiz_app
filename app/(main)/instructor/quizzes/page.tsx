@@ -19,9 +19,8 @@ import OnlyInstructor from "@/app/(components)/main_components/OnlyInstructor/On
 import OnlyLearner from "@/app/(components)/main_components/OnlyLearner/OnlyLearner";
 import JoinQuizDialog from "./JoinModal";
 import { toast } from "sonner";
-import { set } from "zod";
 import axios from "axios";
-import { ViewQuizDialog } from "../../learner/quizzes/page";
+import  ViewQuizDialog  from "../../learner/quizzes/page";
 import ExamWarningModal from "../../learner/quizzes/ExamWarningModal";
 // import { ViewQuizDialog } from "../../learner/quizzes/page";
 
@@ -203,9 +202,9 @@ export default function QuizzPage() {
 
                         <div className="flex items-center justify-between mt-0.5 pt-1 border-t border-gray-50">
                           <div className="text-[11px] font-medium text-slate-700">
-                            No. of stuudent's enrolled:{" "}
+                            Code
                             <span className="font-bold">
-                              {quiz.participants}
+                              {quiz.code}
                             </span>
                           </div>
                           <button
@@ -253,8 +252,8 @@ export default function QuizzPage() {
                   No completed quizzes found.
                 </div>
               ) : (
-                <table className="w-full text-left border-collapse">
-                  <thead>
+                <table className="w-full  border-collapse">
+                  <thead className="text-center">
                     <tr className="bg-[#0b132b] text-white">
                       <th className="py-1.5 px-3 text-sm font-semibold rounded-tl-lg">
                         Title
@@ -263,7 +262,7 @@ export default function QuizzPage() {
                         Difficulty
                       </th>
                       <th className="py-1.5 px-3 text-sm font-semibold">
-                        No. of persons in group
+                        Code
                       </th>
                       <th className="py-1.5 px-3 text-sm font-semibold rounded-tr-lg">
                         Date
@@ -279,13 +278,16 @@ export default function QuizzPage() {
                         <td className="py-1.5 px-3 text-sm font-medium text-slate-900 border border-gray-200">
                           {quiz.title}
                         </td>
-                        <td className="py-1.5 px-3 text-sm text-slate-600 border border-gray-200">
+                        <td className="py-1.5 px-3 text-sm text-slate-600 border border-gray-200 text-center">
                           {quiz.difficulty}
                         </td>
-                        <td className="py-1.5 px-3 text-sm text-slate-600 border border-gray-200">
-                          {quiz.participants} persons
+                        <td className="py-1.5 px-3 text-sm text-slate-600 border ">
+                          <p className="bg-gray-200 px-2 py-1 rounded-lg text-center text-[11px] font-medium text-slate-900">
+
+                          {quiz.code}
+                          </p>
                         </td>
-                        <td className="py-1.5 px-3 text-sm text-slate-600 border border-gray-200">
+                        <td className="py-1.5 px-3 text-sm text-slate-600 border border-gray-200 text-center">
                           {formatDate(quiz.createdAt).date}
                         </td>
                       </tr>

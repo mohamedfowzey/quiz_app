@@ -2,7 +2,7 @@ import { API_BASE_URL } from '@/app/api/AxiosClient';
 import { Student } from '@/app/types/Student';
 import {  cookies } from 'next/headers';
 import Image from 'next/image';
-import avatar from '@/public/images/avatar.avif';
+import avatar from '@/public/images/avatar.jpg';
 import { toast } from 'sonner';
 
 
@@ -17,9 +17,9 @@ export default async function TopStudents() {
       'Authorization': `Bearer ${userToken}`
     }
   
-  }).then(res => res.json()).catch(err => toast.error(err?.message || 'Failed to fetch students data'));
+  }).then(res => res.json()).catch(err => console.log(err?.message || 'Failed to fetch students data'));
   
-  const topStudents: Student[] = allStudents.slice(0, 5);
+  const topStudents: Student[] | undefined = allStudents?.slice(0, 5);
   return (
     <div className="w-full max-w-lg bg-white rounded-3xl p-6 shadow-sm border border-gray-100 font-sans">
       
@@ -47,7 +47,7 @@ export default async function TopStudents() {
 
       {/* Students List Container */}
       <div className="flex flex-col gap-3">
-        {topStudents.map((student, index) => (
+        {topStudents?.map((student, index) => (
           <div 
             key={`${student._id}-${index}`}
             className="flex items-center border border-gray-200 rounded-xl overflow-hidden hover:shadow-sm hover:border-gray-300 transition-all cursor-pointer group"
@@ -69,12 +69,12 @@ export default async function TopStudents() {
                 <h3 className="text-sm font-bold text-gray-800 truncate leading-snug">
                   {student.first_name} {student.last_name}
                 </h3>
-                <p className="text-xs font-medium text-gray-400 mt-0.5">
-                  Status : <span className="text-gray-600 font-semibold">{student.status}</span>
+                <p className="text-sm font-medium text-gray-400 mt-0.5">
+                  Status : <span className={`${student.status === 'active' ? 'text-green-500' : 'text-red-500'}`}>{student.status}</span>
                 </p>
-                <p className="text-xs font-medium text-gray-400 mt-0.5">
+                <p className="text-sm font-medium text-gray-400 mt-0.5">
 
-                  Email: <span className="text-gray-600 font-semibold">{student.email}</span>
+                  Email: <span className="text-blue-900 font-semibold">{student.email}</span>
                 </p>
               </div>
 

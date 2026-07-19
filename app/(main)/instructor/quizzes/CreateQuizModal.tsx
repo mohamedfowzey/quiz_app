@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Check, X, Calendar, Clock } from "lucide-react";
 import { toast } from "sonner";
@@ -37,6 +37,7 @@ export default function CreateQuizModal({
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<CreateQuizData>({
     defaultValues: {
@@ -52,6 +53,26 @@ export default function CreateQuizModal({
       time: "",
     },
   });
+   const { todayDateStr, currentTimeStr } = useMemo(() => {
+    const now = new Date();
+    
+    // Format date to "YYYY-MM-DD"
+    const dateStr = `${now.getFullYear()}-0${now.getMonth()+2}-${now.getDate()}`; 
+    console.log('date : ',dateStr);
+    
+    
+    const hours = String(now.getHours());
+    const minutes = String(now.getMinutes());
+    const timeStr = `${hours}:${minutes}`;
+    console.log(timeStr);
+    
+
+    return { todayDateStr: dateStr, currentTimeStr: timeStr };
+  }, []);
+   const selectedDate = watch("date");
+
+  // 3. Conditionally set min time: restrict only if selected date is today
+  // const minTime = selectedDate === todayDateStr ? currentTimeStr : undefined;
 
   useEffect(() => {
     if (isOpen) {
@@ -252,6 +273,8 @@ export default function CreateQuizModal({
               <Calendar className="w-4 h-4 text-gray-400" />
               <input
                 type="date"
+                
+                min={todayDateStr}
                 {...register("date", { required: true })}
                 className="focus:outline-none font-medium"
               />
@@ -259,6 +282,7 @@ export default function CreateQuizModal({
             <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2">
               <Clock className="w-4 h-4 text-gray-400" />
               <input
+                   
                 type="time"
                 {...register("time", { required: true })}
                 className="focus:outline-none font-medium"

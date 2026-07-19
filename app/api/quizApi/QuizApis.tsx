@@ -71,6 +71,8 @@ export interface QuizDetails {
     type: string
     questions_number: number
     duration: number
+    schadule:string
+    score_per_question:number
 }
 
 // GET: getAll
